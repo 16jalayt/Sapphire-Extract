@@ -16,6 +16,9 @@ namespace Sapphire_Extract_GUI
         private void App_Startup(object sender, StartupEventArgs e)
         {
             using var log = new LoggerConfiguration()
+#if DEBUG
+                .MinimumLevel.Verbose()
+#endif
                 //.WriteTo.Trace(restrictedToMinimumLevel: LogEventLevel.Debug)
                 //.WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Verbose)
                 .WriteTo.Debug(restrictedToMinimumLevel: LogEventLevel.Verbose)

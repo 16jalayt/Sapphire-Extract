@@ -23,7 +23,6 @@ namespace Sapphire_Extract
                 .CreateLogger();
             Serilog.Log.Logger = log;
 
-            Serilog.Log.Debug("Verbose: " + Core.Verbose);
             foreach (string file in Core.FileList)
             {
                 Serilog.Log.Debug("Files: " + file);

@@ -19,6 +19,9 @@ namespace Sapphire_Extract_Common
         //fileList technically private, as is an array, and plugin operates on single file in parameter
         public static List<string> FileList { get; set; } = new List<string>();
         public static bool Verbose { get; set; }
+        public static bool OverwriteAll { get; set; }
+        public static bool AutoRename { get; set; }
+        public static bool Raw { get; set; }
 
         public class CommandLineOptions
         {
@@ -26,20 +29,17 @@ namespace Sapphire_Extract_Common
             public IEnumerable<string>FileName { get; set; }
 
             //TODO: change to string to match serilog?
-            [Option(shortName: 'v', longName: "verbose", Required = false, HelpText = "Print out all messages", Default = false)]
+            [Option(shortName: 'v', longName: "verbose", HelpText = "Print out all messages", Required = false, Default = false)]
             public bool Verbose { get; set; }
 
-            //@Parameter(names = { "-a", "-o", "--overwrite" }, description = "Overwrite all files")
-            //public boolean overwriteAll = false;
+            [Option(shortName: 'o',  longName: "overwrite", HelpText = "Overwrite all files if exists", Required = false, Default = false)]
+            public bool OverwriteAll { get; set; }
 
-            // @Parameter(names = { "-r", "--rename"}, description = "Auto rename existing files")
-            //public boolean autoRename = false;
+            [Option(shortName: 'r', longName: "rename", HelpText = "Auto rename existing files", Required = false, Default = false)]
+            public bool AutoRename { get; set; }
 
-            //@Parameter(names = { "-v", "--verbose" }, description = "Print out extra information")
-            //public boolean verbose = false;
-
-            //@Parameter(names = { "-c", "--raw" }, description = "Skip decompalation. Dump compiled script")
-            //public boolean raw = false;
+            [Option(shortName: 'c', longName: "raw", HelpText = "Do not decompile scripts", Required = false, Default = false)]
+            public bool Raw { get; set; }
 
             //TODO: add output dir?
         }
@@ -54,6 +54,9 @@ namespace Sapphire_Extract_Common
             FileList.RemoveAt(0);
 
             Verbose = options.Verbose;
+            OverwriteAll = options.OverwriteAll;
+            AutoRename = options.AutoRename;
+            Raw = options.Raw;
             return 1;
         }
 
