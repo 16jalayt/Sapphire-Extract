@@ -4,6 +4,7 @@ namespace Plugin_Contract
 {
     public interface IPlugin
     {
-        string GetName();
+        bool CanExtract();
+        void Extract();
     }
 }

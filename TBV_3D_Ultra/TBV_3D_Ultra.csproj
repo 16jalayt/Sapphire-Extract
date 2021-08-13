@@ -8,4 +8,8 @@
     <ProjectReference Include="..\Plugin Contract\Plugin Contract.csproj" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy /y &quot;$(TargetDir)&quot; &quot;$(SolutionDir)Sapphire Extract\$(OutDir)plugins\$(ProjectName)\&quot;" />
+  </Target>
+
 </Project>

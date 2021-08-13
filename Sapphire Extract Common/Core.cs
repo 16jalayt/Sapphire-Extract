@@ -104,7 +104,7 @@ namespace Sapphire_Extract_Common
                     // This assumes the implementation of IPlugin has a parameterless constructor
                     var plugin = Activator.CreateInstance(pluginType) as IPlugin;
 
-                    Console.WriteLine($"Created plugin instance '{plugin?.GetName()}'.");
+                    Console.WriteLine($"Created plugin instance '{plugin?.CanExtract()}'.");
                 }
             }
         }
