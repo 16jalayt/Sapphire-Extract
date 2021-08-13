@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <Authors>16jalayt</Authors>
+    <Company>Sapphire Forge</Company>
+    <Product>TBV_3D_Ultra</Product>
+    <Version>0.0.1</Version>
+    <Copyright>2021</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

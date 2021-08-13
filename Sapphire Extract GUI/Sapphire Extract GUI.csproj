@@ -5,6 +5,10 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <RootNamespace>Sapphire_Extract_GUI</RootNamespace>
     <UseWPF>true</UseWPF>
+    <Authors>16jalayt</Authors>
+    <Company>Sapphire Forge</Company>
+    <Version>0.0.1</Version>
+    <Copyright>2021</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
