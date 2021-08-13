@@ -1,6 +1,11 @@
 ﻿using CommandLine;
+using McMaster.NETCore.Plugins;
+using Plugin_Contract;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace Sapphire_Extract_Common
 {
@@ -25,7 +30,8 @@ namespace Sapphire_Extract_Common
 
         public class CommandLineOptions
         {
-            [Value(0, MetaName = "input file", HelpText = "Input file to be processed.", Required = false)]
+            //BUG: not catching required
+            [Value(0, MetaName = "input file", HelpText = "Input file to be processed.", Required = true)]
             public IEnumerable<string>FileName { get; set; }
 
             //TODO: change to string to match serilog?
@@ -41,7 +47,7 @@ namespace Sapphire_Extract_Common
             [Option(shortName: 'c', longName: "raw", HelpText = "Do not decompile scripts", Required = false, Default = false)]
             public bool Raw { get; set; }
 
-            //TODO: add output dir?
+            //TODO: add output dir?, optional log file
         }
 
         private static int ParseSuccess(CommandLineOptions options)
@@ -65,8 +71,56 @@ namespace Sapphire_Extract_Common
         /// </summary>
         public static void init()
         {
+            //Parse cli
             Parser.Default.ParseArguments<CommandLineOptions>(Environment.GetCommandLineArgs()).MapResult(
                 options => ParseSuccess(options), _ => 1);
+
+            //Load plugins after known valid usage
+            var loaders = new List<PluginLoader>();
+
+            // create plugin loaders
+            var pluginsDir = Path.Combine(AppContext.BaseDirectory, "plugins");
+            foreach (var dir in Directory.GetDirectories(pluginsDir))
+            {
+                var dirName = Path.GetFileName(dir);
+                var pluginDll = Path.Combine(dir, dirName + ".dll");
+                if (File.Exists(pluginDll))
+                {
+                    var loader = PluginLoader.CreateFromAssemblyFile(
+                        pluginDll,
+                        sharedTypes: new[] { typeof(IPlugin) });
+                    loaders.Add(loader);
+                }
+            }
+
+            // Create an instance of plugin types
+            foreach (var loader in loaders)
+            {
+                foreach (var pluginType in loader
+                    .LoadDefaultAssembly()
+                    .GetTypes()
+                    .Where(t => typeof(IPlugin).IsAssignableFrom(t) && !t.IsAbstract))
+                {
+                    // This assumes the implementation of IPlugin has a parameterless constructor
+                    var plugin = Activator.CreateInstance(pluginType) as IPlugin;
+
+                    Console.WriteLine($"Created plugin instance '{plugin?.GetName()}'.");
+                }
+            }
+        }
+
+        public static void ExtractFile(string FileName)
+        {
+            //TODO: err handling on input
+            FileStream fs = new FileStream(FileName, FileMode.Open);
+            BinaryReader InStream = new BinaryReader(fs, Encoding.Default);
+
+        }
+
+        public static void DetectExtension(BinaryReader InStream)
+        {
+            InStream.BaseStream.Seek(0,SeekOrigin.Begin);
+
         }
     }
 }

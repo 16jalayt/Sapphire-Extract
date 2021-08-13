@@ -25,7 +25,8 @@ namespace Sapphire_Extract
 
             foreach (string file in Core.FileList)
             {
-                Serilog.Log.Debug("Files: " + file);
+                Serilog.Log.Information("Extracting: " + file);
+                Core.ExtractFile(file);
             }
         }
     }
