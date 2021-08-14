@@ -1,6 +1,7 @@
 ﻿using CommandLine;
 using McMaster.NETCore.Plugins;
 using Plugin_Contract;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,7 +29,7 @@ namespace Sapphire_Extract_Common
         public static bool AutoRename { get; set; }
         public static bool Raw { get; set; }
 
-        private static List<IPlugin> PluginList= new List<IPlugin>();
+    private static List<IPlugin> PluginList= new List<IPlugin>();
 
         public class CommandLineOptions
         {
@@ -68,6 +69,13 @@ namespace Sapphire_Extract_Common
             return 1;
         }
 
+        private static int ParseFail(IEnumerable<CommandLine.Error> errs)
+        {
+            foreach(CommandLine.Error err in errs)
+                Serilog.Log.Fatal($"CLI error of: '{err}");
+            return 1;
+        }
+
         /// <summary>
         /// Parse CLI arguments and init plugins.
         /// </summary>
@@ -75,7 +83,7 @@ namespace Sapphire_Extract_Common
         {
             //Parse cli
             Parser.Default.ParseArguments<CommandLineOptions>(Environment.GetCommandLineArgs()).MapResult(
-                options => ParseSuccess(options), _ => 1);
+                options => ParseSuccess(options), err => ParseFail(err));
 
             //Load plugins after known valid usage
             var loaders = new List<PluginLoader>();
@@ -106,7 +114,8 @@ namespace Sapphire_Extract_Common
                     // This assumes the implementation of IPlugin has a parameterless constructor
                     var plugin = Activator.CreateInstance(pluginType) as IPlugin;
 
-                    Serilog.Log.Information($"Loaded plugin: '{plugin?.Name}'.");
+                    plugin.init(Log.ForContext("SourceContext", "myDll"));
+                    Log.Information($"Loaded plugin: '{plugin?.Name}'.");
                     PluginList.Add(plugin);
                 }
             }
@@ -115,29 +124,29 @@ namespace Sapphire_Extract_Common
         public static void ExtractFile(string FileName)
         {
             //TODO: err handling on input
-            FileStream fs = new FileStream(FileName, FileMode.Open);
-            BinaryReader InStream = new BinaryReader(fs, Encoding.Default);
-
-            foreach(var plugin in PluginList)
+            using (FileStream fs = new FileStream(FileName, FileMode.Open))
+            using (BinaryReader InStream = new BinaryReader(fs, Encoding.Default))
             {
-                if(plugin.CanExtract(InStream))
+                foreach (var plugin in PluginList)
                 {
-                    Serilog.Log.Information($"Attempting to extract  '{plugin?.Name}'.");
-                    //Attempt to extract
-                    if (plugin.Extract(InStream))
-                        return;
-                    //Failed extraction
-                    else
+                    if (plugin.CanExtract(InStream))
                     {
-                        Serilog.Log.Error($"Failed to extract: '{FileName}' using plugin: '{plugin?.Name}'. Trying next plugin.");
-                    }
-                        
-                }
-            }
-            //Exit loop if failed to return during sucess.
-            //This means no available plugins...
-            Serilog.Log.Fatal($"Failed to extract: '{FileName}'. Not sucessful with any plugins.");
+                        Log.Information($"Attempting to extract  '{plugin?.Name}'.");
+                        //Attempt to extract
+                        if (plugin.Extract(InStream))
+                            return;
+                        //Failed extraction
+                        else
+                        {
+                            Log.Error($"Failed to extract: '{FileName}' using plugin: '{plugin?.Name}'. Trying next plugin.");
+                        }
 
+                    }
+                }
+                //Exit loop if failed to return during sucess.
+                //This means no available plugins...
+                Log.Fatal($"Failed to extract: '{FileName}'. Not sucessful with any plugins.");
+            }
         }
 
         public static void DetectExtension(BinaryReader InStream)

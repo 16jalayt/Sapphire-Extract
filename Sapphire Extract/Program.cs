@@ -8,8 +8,6 @@ namespace Sapphire_Extract
     {
         private static void Main(string[] args)
         {
-            Core.init();
-
             //TODO: call cli parse, set logger
             using var log = new LoggerConfiguration()
 #if DEBUG
@@ -23,9 +21,11 @@ namespace Sapphire_Extract
                 .CreateLogger();
             Serilog.Log.Logger = log;
 
+            Core.init();
+
             foreach (string file in Core.FileList)
             {
-                Serilog.Log.Information("Extracting: " + file);
+                Log.Information("Extracting: " + file);
                 Core.ExtractFile(file);
             }
         }

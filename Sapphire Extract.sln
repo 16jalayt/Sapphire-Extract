@@ -17,9 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sapphire Extract Common", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{F064B585-78B9-44F9-95AE-B90C22B01E4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin Contract", "Plugin Contract\Plugin Contract.csproj", "{54559634-3C88-41B5-91B9-BF4D8673733E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugin Contract", "Plugin Contract\Plugin Contract.csproj", "{54559634-3C88-41B5-91B9-BF4D8673733E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TBV_3D_Ultra", "TBV_3D_Ultra\TBV_3D_Ultra.csproj", "{E09B5B5F-AE6D-469D-80AB-63898782CBD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TBV_Dynamix", "TBV_3D_Ultra\TBV_Dynamix.csproj", "{E09B5B5F-AE6D-469D-80AB-63898782CBD9}"
 	ProjectSection(ProjectDependencies) = postProject
 		{54559634-3C88-41B5-91B9-BF4D8673733E} = {54559634-3C88-41B5-91B9-BF4D8673733E}
 	EndProjectSection
