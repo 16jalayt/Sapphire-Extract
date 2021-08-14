@@ -28,6 +28,8 @@ namespace Sapphire_Extract_Common
         public static bool AutoRename { get; set; }
         public static bool Raw { get; set; }
 
+        private static List<IPlugin> PluginList= new List<IPlugin>();
+
         public class CommandLineOptions
         {
             //BUG: not catching required
@@ -104,7 +106,8 @@ namespace Sapphire_Extract_Common
                     // This assumes the implementation of IPlugin has a parameterless constructor
                     var plugin = Activator.CreateInstance(pluginType) as IPlugin;
 
-                    Console.WriteLine($"Created plugin instance '{plugin?.CanExtract()}'.");
+                    Serilog.Log.Information($"Loaded plugin: '{plugin?.Name}'.");
+                    PluginList.Add(plugin);
                 }
             }
         }
@@ -114,6 +117,26 @@ namespace Sapphire_Extract_Common
             //TODO: err handling on input
             FileStream fs = new FileStream(FileName, FileMode.Open);
             BinaryReader InStream = new BinaryReader(fs, Encoding.Default);
+
+            foreach(var plugin in PluginList)
+            {
+                if(plugin.CanExtract(InStream))
+                {
+                    Serilog.Log.Information($"Attempting to extract  '{plugin?.Name}'.");
+                    //Attempt to extract
+                    if (plugin.Extract(InStream))
+                        return;
+                    //Failed extraction
+                    else
+                    {
+                        Serilog.Log.Error($"Failed to extract: '{FileName}' using plugin: '{plugin?.Name}'. Trying next plugin.");
+                    }
+                        
+                }
+            }
+            //Exit loop if failed to return during sucess.
+            //This means no available plugins...
+            Serilog.Log.Fatal($"Failed to extract: '{FileName}'. Not sucessful with any plugins.");
 
         }
 

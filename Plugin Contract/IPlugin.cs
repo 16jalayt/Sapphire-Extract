@@ -1,10 +1,13 @@
 ﻿using System;
+using System.IO;
 
 namespace Plugin_Contract
 {
     public interface IPlugin
     {
-        bool CanExtract();
-        void Extract();
+        public string Name { get;}
+        public bool CanExtract(BinaryReader InStream);
+        public bool Extract(BinaryReader InStream);
+        public int GetPriority();
     }
 }
