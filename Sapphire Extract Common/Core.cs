@@ -131,8 +131,9 @@ namespace Sapphire_Extract_Common
                 {
                     if (plugin.CanExtract(InStream))
                     {
-                        Log.Information($"Attempting to extract  '{plugin?.Name}'.");
+                        Log.Information($"Attempting to extract file: '{FileName}' with plugin: '{plugin?.Name}'.");
                         //Attempt to extract
+                        //TODO: run outsetup with filename
                         if (plugin.Extract(InStream))
                             return;
                         //Failed extraction
