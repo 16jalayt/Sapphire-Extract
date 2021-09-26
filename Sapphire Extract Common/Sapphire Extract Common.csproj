@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Plugin Contract\Plugin Contract.csproj" />
+    <ProjectReference Include="..\Sapphire Extract Helpers\Sapphire Extract Helpers.csproj" />
   </ItemGroup>
 
 </Project>
