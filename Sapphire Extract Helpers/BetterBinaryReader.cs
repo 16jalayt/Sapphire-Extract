@@ -1,56 +1,57 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Sapphire_Extract_Helpers
 {
     public class BetterBinaryReader
     {
-        FileStream fs;
-        BinaryReader br;
+        private FileStream _fs;
+        private BinaryReader _br;
+        private string _fileName;
+
 
         public BetterBinaryReader(string fileName)
         {
-            fs = new FileStream(fileName, FileMode.Open);
-            br = new BinaryReader(fs, Encoding.Default);
-
-            //BR.ReadBytes()
+            _fileName = fileName;
+            _fs = new FileStream(fileName, FileMode.Open);
+            _br = new BinaryReader(_fs, Encoding.Default);
         }
 
         public void Seek(long pos)
         {
-            br.BaseStream.Seek(pos, SeekOrigin.Begin);
+            _br.BaseStream.Seek(pos, SeekOrigin.Begin);
         }
 
         public long Skip(long offset)
         {
             //return current pos
-            return br.BaseStream.Seek(offset, SeekOrigin.Current);
+            return _br.BaseStream.Seek(offset, SeekOrigin.Current);
         }
 
         public long Position()
         {
-            return br.BaseStream.Position;
+            return _br.BaseStream.Position;
+        }
+
+        public string FileName()
+        {
+            return _fileName;
         }
 
         public int ReadInt()
         {
-            return br.ReadInt32();
+            return _br.ReadInt32();
         }
 
         public byte[] ReadBytes(int len)
         {
-            return br.ReadBytes(len);
+            return _br.ReadBytes(len);
         }
 
         public void Dispose()
         {
-            br.Dispose();
-            fs.Dispose();
+            _br.Dispose();
+            _fs.Dispose();
         }
     }
 }

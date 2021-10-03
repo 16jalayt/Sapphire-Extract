@@ -138,7 +138,7 @@ namespace Sapphire_Extract_Common
                         InStream.Dispose();
                         return;
                     }
-                        
+
                     //Failed extraction
                     else
                     {

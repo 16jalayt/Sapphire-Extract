@@ -1,10 +1,6 @@
 ﻿using Plugin_Contract;
-using Sapphire_Extract_Common;
 using Sapphire_Extract_Helpers;
 using Serilog;
-using System;
-using System.IO;
-using System.Linq;
 
 namespace TBV_Dynamix
 {
@@ -28,13 +24,11 @@ namespace TBV_Dynamix
 
         public bool CanExtract(BetterBinaryReader InStream)
         {
-            //TODO: create helper
             InStream.Seek(0);
             byte[] magic = InStream.ReadBytes(8);
 
             //If the file has wrong id, say we can't extract
-            if (System.Text.Encoding.UTF8.GetString(magic) == "TBVolume")
-                //if (magic.SequenceEqual(Encoding.UTF8.GetBytes("TBVolume")))
+            if (Helpers.String(magic) == "TBVolume")
                 return true;
             else
                 return false;
@@ -50,7 +44,8 @@ namespace TBV_Dynamix
 
             //TODO: assert different
             //unknown. Seems to always stay same. Version?
-            InStream.Skip(2);
+            Helpers.AssertValue(InStream, new byte[] { 0xD0, 0x07 });
+            //InStream.Skip(2);
             //# of files (4)
             int NumFiles = InStream.ReadInt();
 
@@ -63,7 +58,6 @@ namespace TBV_Dynamix
             //End of entry in file table
             long TableOffset = InStream.Position();
 
-            
             for (int i = 0; i < NumFiles; i++)
             {
                 //go back to look up table
@@ -80,9 +74,9 @@ namespace TBV_Dynamix
                 //go to start of file
                 InStream.Seek(FileOffset);
                 //name of current output file, and remove \0
-                string CurrFileName = System.Text.Encoding.UTF8.GetString(InStream.ReadBytes(24)).Replace("\0", string.Empty);
+                string CurrFileName = Helpers.String(InStream.ReadBytes(24)).Replace("\0", string.Empty);
                 Log.Debug($"CurrFiileName: {CurrFileName}");
-                
+
                 int Length = InStream.ReadInt();
                 Log.Debug($"File Length: {Length}");
                 //System.out.println("lenth:"+ length);
@@ -90,10 +84,9 @@ namespace TBV_Dynamix
                 byte[] FileContents = InStream.ReadBytes(Length);
                 //Output.OutSetup(ParseInput.inputWithoutExtension + ParseInput.separator + name, "");
                 //ParseInput.outStream.write(fileout);
-                System.IO.File.WriteAllBytes(@"C:/Users/16jal/source/repos/Sapphire Extract/Sapphire Extract/bin/Debug/net5.0/out/"+CurrFileName, FileContents);
+                System.IO.File.WriteAllBytes(@"C:/Users/16jal/source/repos/Sapphire Extract/Sapphire Extract/bin/Debug/net5.0/out/" + CurrFileName, FileContents);
                 Log.Debug($"\n");
             }
-
 
             return true;
         }
@@ -106,7 +99,6 @@ namespace TBV_Dynamix
 
         /*public void Cleanup()
         {
-
         }*/
     }
 }
