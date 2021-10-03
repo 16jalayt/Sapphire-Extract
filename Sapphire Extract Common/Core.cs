@@ -26,9 +26,9 @@ namespace Sapphire_Extract_Common
         public static List<string> FileList { get; set; } = new List<string>();
 
         public static bool Verbose { get; set; }
-        public static bool OverwriteAll { get; set; }
-        public static bool AutoRename { get; set; }
-        public static bool Raw { get; set; }
+        //public static bool OverwriteAll { get; set; }
+        //public static bool AutoRename { get; set; }
+        //public static bool Raw { get; set; }
 
         private static List<IPlugin> PluginList = new List<IPlugin>();
 
@@ -64,9 +64,12 @@ namespace Sapphire_Extract_Common
             FileList.RemoveAt(0);
 
             Verbose = options.Verbose;
-            OverwriteAll = options.OverwriteAll;
-            AutoRename = options.AutoRename;
-            Raw = options.Raw;
+            //OverwriteAll = options.OverwriteAll;
+            //AutoRename = options.AutoRename;
+            //Raw = options.Raw;
+            Helpers.setAutoRename(options.AutoRename);
+            Helpers.setOverwriteAll(options.OverwriteAll);
+            Helpers.setRaw(options.Raw);
             return 1;
         }
 
@@ -128,11 +131,13 @@ namespace Sapphire_Extract_Common
             BetterBinaryReader InStream = new BetterBinaryReader(FileName);
             foreach (var plugin in PluginList)
             {
+                InStream.Seek(0);
+                //TODO:plugin priority
                 if (plugin.CanExtract(InStream))
                 {
                     Log.Information($"Attempting to extract file: '{FileName}' with plugin: '{plugin?.Name}'.");
+                    InStream.Seek(0);
                     //Attempt to extract
-                    //TODO: run outsetup with filename
                     if (plugin.Extract(InStream))
                     {
                         InStream.Dispose();

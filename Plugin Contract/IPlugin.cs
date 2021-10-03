@@ -12,7 +12,8 @@ namespace Plugin_Contract
 
         public bool Extract(BetterBinaryReader InStream);
 
-        public int GetPriority();
+        //TODO:simplify with enum?
+        //public int GetPriority();
 
         //public void Cleanup();
     }

@@ -8,7 +8,10 @@ namespace Sapphire_Extract_Helpers
         //TODO:interface like assert for validating versions in files
         //TODO: wrapper for binary reader?
 
+        public static bool Raw;
+
         //TODO: pass multiple possible values. Helper to itter and check returns?
+        //TODO: better debug messages(pass guessed value to print?)
         public static bool AssertValue(BetterBinaryReader InStream, byte[] val)
         {
             byte[] readValues = InStream.ReadBytes(val.Length);
@@ -69,12 +72,26 @@ namespace Sapphire_Extract_Helpers
         {
         }
 
-        //Path.GetFileName(@"c:\:folder\uploads\xml\file.xml") // => returns file.xml
-
         //Pass off to different class
-        public static void Write(string fileName, byte[] fileContents)
+        public static void Write(string filePath, string fileName, byte[] fileContents, bool subdir = true)
         {
-            Writer.WriteFile(fileName, fileContents);
+            //It means to interpret the string literally
+            //@"\\servername\share\folder"
+            //is nicer than this:
+            //"\\\\servername\\share\\folder"
+            Writer.WriteFile(@filePath, fileName, fileContents, subdir);
+        }
+        public static void setOverwriteAll(bool val)
+        {
+            Writer.OverwriteAll = val;
+        }
+        public static void setAutoRename(bool val)
+        {
+            Writer.AutoRename = val;
+        }
+        public static void setRaw(bool val)
+        {
+            Raw = val;
         }
     }
 }
