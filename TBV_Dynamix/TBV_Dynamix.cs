@@ -21,10 +21,8 @@ namespace TBV_Dynamix
 
         public bool CanExtract(BetterBinaryReader InStream)
         {
-            byte[] magic = InStream.ReadBytes(8);
-
             //If the file has wrong id, say we can't extract
-            if (Helpers.String(magic) == "TBVolume")
+            if (Helpers.AssertString(InStream, "TBVolume"))
                 return true;
             else
                 return false;
@@ -48,7 +46,7 @@ namespace TBV_Dynamix
             //Always null?
             Helpers.AssertValue(InStream, new byte[] { 0x00, 0x00 });
 
-            //Dev's name/email?
+            //Dev's name/email null padded? RichRayl@CUC\0\0...
             Helpers.AssertValue(InStream, new byte[] { 0x52, 0x69, 0x63, 0x68, 0x52, 0x61, 0x79, 0x6C, 0x40, 0x43, 0x55, 0x43, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00});
 
             //End of entry in file table

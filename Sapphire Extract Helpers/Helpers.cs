@@ -62,9 +62,19 @@ namespace Sapphire_Extract_Helpers
             return true;
         }
 
-        public static void AssertString(BetterBinaryReader InStream, byte[] val)
+        public static bool AssertString(BetterBinaryReader InStream, string val)
         {
-            //byte[] readValues = InStream.ReadBytes(val.Length);
+            string readValues = String(InStream.ReadBytes(8));
+            //string readValues = String(InStream.ReadBytes(val.Length));
+            Log.Warning(readValues);
+            if (readValues != val)
+            {
+                Log.Warning($"Value in file {InStream.FileName()} at position '{InStream.Position()}'...");
+                Log.Warning($"Expected value '{val}' got '{readValues}'");
+                return false;
+            }   
+            else
+                return true;
         }
 
         //may not use
