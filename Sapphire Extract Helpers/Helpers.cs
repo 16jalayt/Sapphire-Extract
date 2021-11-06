@@ -18,7 +18,7 @@ namespace Sapphire_Extract_Helpers
             if (!Equal(readValues, val))
             {
                 //TODO:figure out better output. prints int
-                Log.Warning($"Value in file {InStream.FileName()} at position '{InStream.Position()}'...");
+                Log.Warning($"Value in file {InStream.FileName} at position '{InStream.Position()}'...");
                 Log.Warning($"Expected value '{Hex(val)}' got '{Hex(readValues)}'");
                 return false;
             }
@@ -69,7 +69,7 @@ namespace Sapphire_Extract_Helpers
             Log.Warning(readValues);
             if (readValues != val)
             {
-                Log.Warning($"Value in file {InStream.FileName()} at position '{InStream.Position()}'...");
+                Log.Warning($"Value in file {InStream.FileName} at position '{InStream.Position()}'...");
                 Log.Warning($"Expected value '{val}' got '{readValues}'");
                 return false;
             }   

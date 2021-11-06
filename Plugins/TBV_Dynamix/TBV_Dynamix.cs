@@ -90,7 +90,7 @@ namespace TBV_Dynamix
                 Log.Debug($"File Length: {Length}\n");
 
                 byte[] FileContents = InStream.ReadBytes(Length);
-                Helpers.Write(InStream.FilePath(), CurrFileName, FileContents);
+                Helpers.Write(InStream.FilePath, CurrFileName, FileContents);
 
                 //Go back to look up table
                 InStream.Seek(TableOffset);

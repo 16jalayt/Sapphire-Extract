@@ -2,7 +2,7 @@
   "profiles": {
     "Sapphire Extract": {
       "commandName": "Project",
-      "commandLineArgs": "minigolf.tbv"
+      "commandLineArgs": "\"text green.dat\""
     }
   }
 }

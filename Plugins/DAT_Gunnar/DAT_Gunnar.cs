@@ -35,7 +35,7 @@ namespace DAT_Gunnar
         public bool CanExtract(BetterBinaryReader InStream)
         {
             //If the file has wrong id, say we can't extract
-            if (Helpers.AssertString(InStream, "TBVolume"))
+            if (InStream.FileName == "text green.dat")
                 return true;
             else
                 return false;
@@ -90,7 +90,7 @@ namespace DAT_Gunnar
                 Log.Debug($"File Length: {Length}\n");
 
                 byte[] FileContents = InStream.ReadBytes(Length);
-                Helpers.Write(InStream.FilePath(), CurrFileName, FileContents);
+                Helpers.Write(InStream.FilePath, CurrFileName, FileContents);
 
                 //Go back to look up table
                 InStream.Seek(TableOffset);
