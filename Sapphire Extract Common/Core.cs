@@ -136,7 +136,7 @@ namespace Sapphire_Extract_Common
                 //TODO:plugin priority
                 if (plugin.CanExtract(InStream))
                 {
-                    Log.Information($"Attempting to extract file: '{FileName}' with plugin: '{plugin?.Name}'.");
+                    Log.Information($"Attempting to extract file: '{FileName}' with plugin: '{plugin?.Name}'.\n");
                     InStream.Seek(0);
                     //Attempt to extract
                     if (plugin.Extract(InStream))

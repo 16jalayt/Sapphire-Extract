@@ -48,7 +48,7 @@ namespace TBV_Dynamix
         /// <returns></returns>
         public bool Extract(BetterBinaryReader InStream)
         {
-            Log.Warning($"Plugin '{Name}' is not finished. Will likely spew out garbage.");
+            //Log.Warning($"Plugin '{Name}' is not finished. Will likely spew out garbage.");
             Log.Warning($"Some files may error with an EOF exception.This appears to be Dynamix's fault.");
 
             //Seek past magic (TBVolume)
@@ -83,13 +83,14 @@ namespace TBV_Dynamix
                 //Go to start of file
                 InStream.Seek(FileOffset);
                 //Name of current output file, and remove \0
-                string CurrFileName = Helpers.String(InStream.ReadBytes(24)).Replace("\0", string.Empty);
-                Log.Debug($"CurrFiileName: {CurrFileName}");
+                string CurrFileName = Helpers.String(InStream.ReadBytes(24)).Trim('\0');
+                //string CurrFileName = Helpers.String(InStream.ReadBytes(24)).Replace("\0", string.Empty);
+                Log.Debug($"CurrFileName: {CurrFileName}");
 
-                int Length = InStream.ReadInt();
-                Log.Debug($"File Length: {Length}\n");
+                int FileLength = InStream.ReadInt();
+                Log.Debug($"File Length: {FileLength}\n");
 
-                byte[] FileContents = InStream.ReadBytes(Length);
+                byte[] FileContents = InStream.ReadBytes(FileLength);
                 Helpers.Write(InStream.FilePath, CurrFileName, FileContents);
 
                 //Go back to look up table
