@@ -2,13 +2,21 @@
 using Sapphire_Extract_Helpers;
 using Serilog;
 
-namespace TBV_Dynamix
+namespace DAT_Gunnar
 {
-    //Trophy Bass Volume
-    internal class TBV_Dynamix : IPlugin
+    //IMPORTANT: no magic or identification. Make extra sure to validate data
+    internal class DAT_Gunnar : IPlugin
     {
-        public string Name { get { return "3d Ultra"; } }
+        /// <summary>
+        /// Pretty text that shows in the error logs to identify the plugin.
+        /// </summary>
+        public string Name { get { return "DAT Gunnar"; } }
 
+        /// <summary>
+        /// Called when plugins are enumerated.
+        /// </summary>
+        /// <param name="masterlogger"></param>
+        /// <returns></returns>
         public bool Init(Serilog.ILogger masterlogger)
         {
             Serilog.Log.Logger = new Serilog.LoggerConfiguration()
@@ -19,6 +27,11 @@ namespace TBV_Dynamix
             return true;
         }
 
+        /// <summary>
+        /// Tests whether this plugin will accept the current file.
+        /// </summary>
+        /// <param name="InStream"></param>
+        /// <returns></returns>
         public bool CanExtract(BetterBinaryReader InStream)
         {
             //If the file has wrong id, say we can't extract
@@ -28,6 +41,11 @@ namespace TBV_Dynamix
                 return false;
         }
 
+        /// <summary>
+        /// Extracts the file from the given stream.
+        /// </summary>
+        /// <param name="InStream"></param>
+        /// <returns></returns>
         public bool Extract(BetterBinaryReader InStream)
         {
             Log.Warning($"Plugin '{Name}' is not finished. Will likely spew out garbage.");
@@ -47,13 +65,13 @@ namespace TBV_Dynamix
             Helpers.AssertValue(InStream, new byte[] { 0x00, 0x00 });
 
             //Dev's name/email null padded? RichRayl@CUC\0\0...
-            Helpers.AssertValue(InStream, new byte[] { 0x52, 0x69, 0x63, 0x68, 0x52, 0x61, 0x79, 0x6C, 0x40, 0x43, 0x55, 0x43, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00});
+            Helpers.AssertValue(InStream, new byte[] { 0x52, 0x69, 0x63, 0x68, 0x52, 0x61, 0x79, 0x6C, 0x40, 0x43, 0x55, 0x43, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 });
 
             //End of entry in file table
             long TableOffset = InStream.Position();
 
             for (int i = 0; i < NumFiles; i++)
-            {                
+            {
                 //Unknown. Different for each file
                 InStream.Skip(4);
 

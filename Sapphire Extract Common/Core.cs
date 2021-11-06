@@ -119,6 +119,7 @@ namespace Sapphire_Extract_Common
                     var plugin = Activator.CreateInstance(pluginType) as IPlugin;
 
                     plugin.Init(Log.ForContext("SourceContext", "myDll"));
+                    //TODO: replace with dll name?
                     Log.Information($"Loaded plugin: '{plugin?.Name}'.");
                     PluginList.Add(plugin);
                 }
@@ -155,12 +156,6 @@ namespace Sapphire_Extract_Common
             //This means no available plugins...
             Log.Fatal($"Failed to extract: '{FileName}'. Not sucessful with any plugins.");
             InStream.Dispose();
-        }
-
-        //??????????
-        public static void DetectExtension(BinaryReader InStream)
-        {
-            InStream.BaseStream.Seek(0, SeekOrigin.Begin);
         }
     }
 }
