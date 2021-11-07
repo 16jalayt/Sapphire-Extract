@@ -2,7 +2,7 @@
   "profiles": {
     "Sapphire Extract": {
       "commandName": "Project",
-      "commandLineArgs": "\"text tit.dat\""
+      "commandLineArgs": "\"scenes.dat\""
     }
   }
 }

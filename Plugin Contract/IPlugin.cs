@@ -5,15 +5,13 @@ namespace Plugin_Contract
     public interface IPlugin
     {
         public string Name { get; }
+        //public int Priority { get; }
 
         public bool Init(Serilog.ILogger masterlogger);
 
         public bool CanExtract(BetterBinaryReader InStream);
 
         public bool Extract(BetterBinaryReader InStream);
-
-        //TODO:simplify with enum?
-        //public int GetPriority();
 
         //public void Cleanup();
     }

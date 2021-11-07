@@ -1,6 +1,7 @@
 ﻿using CommandLine;
 using McMaster.NETCore.Plugins;
 using Plugin_Contract;
+using Priority_Queue;
 using Sapphire_Extract_Helpers;
 using Serilog;
 using System;
@@ -31,6 +32,7 @@ namespace Sapphire_Extract_Common
         //public static bool Raw { get; set; }
 
         private static List<IPlugin> PluginList = new List<IPlugin>();
+        //private static SimplePriorityQueue<IPlugin> PluginQueue = new SimplePriorityQueue<IPlugin>();
 
         public class CommandLineOptions
         {
@@ -122,6 +124,7 @@ namespace Sapphire_Extract_Common
                     //TODO: replace with dll name?
                     Log.Information($"Loaded plugin: '{plugin?.Name}'.");
                     PluginList.Add(plugin);
+                    //PluginQueue.Enqueue(plugin, plugin.Priority);
                 }
             }
         }
@@ -130,8 +133,12 @@ namespace Sapphire_Extract_Common
         {
             //TODO: err handling on input
             BetterBinaryReader InStream = new BetterBinaryReader(FileName);
-            foreach (var plugin in PluginList)
+
+            //while(PluginQueue.Count != 0)
+            foreach (IPlugin plugin in PluginList)
             {
+                //IPlugin plugin = PluginQueue.Dequeue();
+
                 InStream.Seek(0);
                 //TODO:plugin priority
                 if (plugin.CanExtract(InStream))

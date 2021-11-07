@@ -15,6 +15,11 @@ namespace DAT_Gunnar
         /// </summary>
         public string Name { get { return "DAT Gunnar"; } }
 
+        /*/// <summary>
+        /// Get the priority of the plugin. Lower is higher priority. Normal Priority: 100
+        /// </summary>
+        public int Priority { get { return 100; } }*/
+
         /// <summary>
         /// Called when plugins are enumerated.
         /// </summary>
@@ -114,10 +119,5 @@ namespace DAT_Gunnar
 
             return true;
         }
-
-        /*public int GetPriority()
-        {
-            return 100;
-        }*/
     }
 }
