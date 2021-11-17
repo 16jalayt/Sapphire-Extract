@@ -129,9 +129,19 @@ namespace Sapphire_Extract_Common
             }
         }
 
-        public static void ExtractFile(string FileName)
+        /// <summary>
+        /// Attempt extraction of a given file.
+        /// </summary>
+        /// <param name="FileName"></param>
+        /// <returns>sucess</returns>
+        public static bool ExtractFile(string FileName)
         {
-            //TODO: err handling on input
+            if(!File.Exists(FileName))
+            {
+                Log.Error($"The file: '{FileName}' does not exist.\n");
+                return false;
+            }
+
             BetterBinaryReader InStream = new BetterBinaryReader(FileName);
 
             //while(PluginQueue.Count != 0)
@@ -140,7 +150,6 @@ namespace Sapphire_Extract_Common
                 //IPlugin plugin = PluginQueue.Dequeue();
 
                 InStream.Seek(0);
-                //TODO:plugin priority
                 if (plugin.CanExtract(InStream))
                 {
                     Log.Information($"Attempting to extract file: '{FileName}' with plugin: '{plugin?.Name}'.\n");
@@ -149,7 +158,7 @@ namespace Sapphire_Extract_Common
                     if (plugin.Extract(InStream))
                     {
                         InStream.Dispose();
-                        return;
+                        return true;
                     }
 
                     //Failed extraction
@@ -163,6 +172,7 @@ namespace Sapphire_Extract_Common
             //This means no available plugins...
             Log.Fatal($"Failed to extract: '{FileName}'. Not sucessful with any plugins.");
             InStream.Dispose();
+            return false;
         }
     }
 }

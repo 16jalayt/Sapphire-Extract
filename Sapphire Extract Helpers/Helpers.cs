@@ -5,13 +5,17 @@ namespace Sapphire_Extract_Helpers
 {
     public static class Helpers
     {
-        //TODO:interface like assert for validating versions in files
-        //TODO: wrapper for binary reader?
-
         public static bool Raw;
 
         //TODO: pass multiple possible values. Helper to itter and check returns?
         //TODO: better debug messages(pass guessed value to print?)
+
+        /// <summary>
+        /// Read a byte array and print if not equal.
+        /// </summary>
+        /// <param name="InStream"></param>
+        /// <param name="val"></param>
+        /// <returns>Truth</returns>
         public static bool AssertValue(BetterBinaryReader InStream, byte[] val)
         {
             byte[] readValues = InStream.ReadBytes(val.Length);
@@ -23,6 +27,79 @@ namespace Sapphire_Extract_Helpers
                 return false;
             }
             return true;
+        }
+
+        /// <summary>
+        /// Read an int and print if not equal.
+        /// </summary>
+        /// <param name="InStream"></param>
+        /// <param name="val"></param>
+        /// <returns>Truth</returns>
+        public static bool AssertInt(BetterBinaryReader InStream, int val)
+        {
+            int readValue = InStream.ReadInt();
+            if (readValue != val)
+            {
+                //TODO:figure out better output. prints int
+                Log.Warning($"Value in file {InStream.FileName} at position '{InStream.Position()}'...");
+                Log.Warning($"Expected value '{val}' got '{readValue}'");
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Read a string and print if not equal.
+        /// </summary>
+        /// <param name="InStream"></param>
+        /// <param name="val"></param>
+        /// <returns></returns>
+        public static bool AssertString(BetterBinaryReader InStream, string val)
+        {
+            string readValues = String(InStream.ReadBytes(val.Length));
+            //string readValues = String(InStream.ReadBytes(val.Length));
+            //Log.Warning(readValues);
+            if (readValues != val)
+            {
+                Log.Warning($"Value in file {InStream.FileName} at position '{InStream.Position()}'...");
+                Log.Warning($"Expected value '{val}' got '{readValues}'");
+                return false;
+            }   
+            else
+                return true;
+        }
+
+        //may not use
+        public static void AssertValueAbort(byte[] val)
+        {
+        }
+
+        /// <summary>
+        /// Write a byte array to a specified file.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="fileName"></param>
+        /// <param name="fileContents"></param>
+        /// <param name="subdir"></param>
+        public static void Write(string filePath, string fileName, byte[] fileContents, bool subdir = true)
+        {
+            //It means to interpret the string literally
+            //@"\\servername\share\folder"
+            //is nicer than this:
+            //"\\\\servername\\share\\folder"
+            Writer.WriteFile(@filePath, fileName, fileContents, subdir);
+        }
+        public static void setOverwriteAll(bool val)
+        {
+            Writer.OverwriteAll = val;
+        }
+        public static void setAutoRename(bool val)
+        {
+            Writer.AutoRename = val;
+        }
+        public static void setRaw(bool val)
+        {
+            Raw = val;
         }
 
         public static string Hex(byte[] inArray)
@@ -60,48 +137,6 @@ namespace Sapphire_Extract_Helpers
 
             // If we got here, equal
             return true;
-        }
-
-        public static bool AssertString(BetterBinaryReader InStream, string val)
-        {
-            string readValues = String(InStream.ReadBytes(8));
-            //string readValues = String(InStream.ReadBytes(val.Length));
-            Log.Warning(readValues);
-            if (readValues != val)
-            {
-                Log.Warning($"Value in file {InStream.FileName} at position '{InStream.Position()}'...");
-                Log.Warning($"Expected value '{val}' got '{readValues}'");
-                return false;
-            }   
-            else
-                return true;
-        }
-
-        //may not use
-        public static void AssertValueAbort(byte[] val)
-        {
-        }
-
-        //Pass off to different class
-        public static void Write(string filePath, string fileName, byte[] fileContents, bool subdir = true)
-        {
-            //It means to interpret the string literally
-            //@"\\servername\share\folder"
-            //is nicer than this:
-            //"\\\\servername\\share\\folder"
-            Writer.WriteFile(@filePath, fileName, fileContents, subdir);
-        }
-        public static void setOverwriteAll(bool val)
-        {
-            Writer.OverwriteAll = val;
-        }
-        public static void setAutoRename(bool val)
-        {
-            Writer.AutoRename = val;
-        }
-        public static void setRaw(bool val)
-        {
-            Raw = val;
         }
     }
 }

@@ -57,7 +57,7 @@ namespace DAT_Gunnar
         public bool Extract(BetterBinaryReader InStream)
         {
             //REIMPORTANT: no magic or identification. Make extra sure to validate data.
-            Log.Warning($"Plugin '{Name}' is not finished. Will likely spew out garbage.");
+            //Log.Warning($"Plugin '{Name}' is not finished. Will likely spew out garbage.");
             Log.Warning($"DAT_Gnnar files have no means of identification. This may not be the correct archive type.");
 
             //# of files (4 bytes)

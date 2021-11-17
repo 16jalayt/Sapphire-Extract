@@ -32,7 +32,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sapphire Extract Helpers", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAT_Gunnar", "Plugins\DAT_Gunnar\DAT_Gunnar.csproj", "{1CA49CA2-1858-457A-9F15-F1C6FC27245A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DEMO_ExamplePlugin", "Plugins\DEMO_ExamplePlugin\DEMO_ExamplePlugin.csproj", "{58A6784E-81C6-422F-B75D-E50BEB246C51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DEMO_ExamplePlugin", "Plugins\DEMO_ExamplePlugin\DEMO_ExamplePlugin.csproj", "{58A6784E-81C6-422F-B75D-E50BEB246C51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PAK_Minigolf", "Plugins\PAK_Minigolf\PAK_Minigolf.csproj", "{7180B20A-DB4C-4A2B-A107-E5BDD6C414D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,6 +74,10 @@ Global
 		{58A6784E-81C6-422F-B75D-E50BEB246C51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58A6784E-81C6-422F-B75D-E50BEB246C51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58A6784E-81C6-422F-B75D-E50BEB246C51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7180B20A-DB4C-4A2B-A107-E5BDD6C414D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7180B20A-DB4C-4A2B-A107-E5BDD6C414D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7180B20A-DB4C-4A2B-A107-E5BDD6C414D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7180B20A-DB4C-4A2B-A107-E5BDD6C414D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,6 +86,7 @@ Global
 		{E09B5B5F-AE6D-469D-80AB-63898782CBD9} = {F064B585-78B9-44F9-95AE-B90C22B01E4E}
 		{1CA49CA2-1858-457A-9F15-F1C6FC27245A} = {F064B585-78B9-44F9-95AE-B90C22B01E4E}
 		{58A6784E-81C6-422F-B75D-E50BEB246C51} = {F064B585-78B9-44F9-95AE-B90C22B01E4E}
+		{7180B20A-DB4C-4A2B-A107-E5BDD6C414D5} = {F064B585-78B9-44F9-95AE-B90C22B01E4E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {626CEA91-A434-47DA-A700-E1FE9BAF0E89}

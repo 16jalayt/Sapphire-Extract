@@ -1,17 +1,10 @@
 ﻿using Plugin_Contract;
 using Sapphire_Extract_Helpers;
 using Serilog;
-//Version 1.0
 
-/*Remember to build solution manually before testing plugin!
- * Start debugging does NOT rebuild plugins!
- * 
- * This is an exmple plugin to show the basics of creating a plugin.
- *The example file is included in the example plugin directory.
- **/
-namespace DEMO_ExamplePlugin
+namespace PAK_Minigolf
 {
-    internal class DEMO_ExamplePlugin : IPlugin
+    internal class PAK_Minigolf : IPlugin
     {
         /// <summary>
         /// Pretty text that shows in the error logs to identify the plugin.
@@ -46,10 +39,7 @@ namespace DEMO_ExamplePlugin
         public bool CanExtract(BetterBinaryReader InStream)
         {
             //If the file has wrong id, say we can't extract
-            //Note: can also get the file extension in case no magic
-            //It is prefered to identify by content not name for reliability
-            //if (Path.GetExtension(InStream.FileName) == ".demo")
-            if (Helpers.AssertString(InStream, "DEMO"))
+            if (Helpers.AssertString(InStream, "tongas_pack_v20000"))
                 return true;
             else
                 return false;
@@ -63,30 +53,18 @@ namespace DEMO_ExamplePlugin
         public bool Extract(BetterBinaryReader InStream)
         {
             Log.Warning($"Plugin '{Name}' is not finished. Will likely spew out garbage.");
-            Log.Warning($"Put important info here like validated version numbers or warnings to users.");
 
-            //Seek past magic (DEMO)
-            InStream.Seek(4);
-
-
-            //Note: best way to check for constant bytes is AssertValue, 
-            //but can also use AssertString, like under CanExtract above,
-            //but AssertString only works with plain text
-
-            //Note: AssertValue is designed as a notification to the developer of
-            //different file variations to aid in research. A FAILED ASSERT WILL NOT END PLUGIN! just display a warning.
-            //However, it will return a bool, so you can use an "if(!assert) return false" to fail the extraction.
-
-            //Unknown value. Seems to always stay same. Version likely 2.1
-            Helpers.AssertValue(InStream, new byte[] { 0x02, 0x01 });
+            //Seek past magic (tongas_pack_v20000)
+            InStream.Seek(18);
 
             //# of files (4 bytes)
             int NumFiles = InStream.ReadInt();
-
             Log.Information($"Extracting {NumFiles} files...\n");
 
+            //Unknown value. Need bigger sample size than 1
+            Helpers.AssertInt(InStream, 199208);
+
             //End of entry in file table
-            //Note:need forward dec so persists each loop.
             long TableOffset;
 
             for (int i = 0; i < NumFiles; i++)
@@ -98,26 +76,26 @@ namespace DEMO_ExamplePlugin
                 int FileLength = InStream.ReadInt();
                 Log.Debug($"File Length: {FileLength}");
 
-                //Name of current output file, and remove \0
-                //Note: In the demo, the name is fixed at 15 chars and null padded.
-                //Note: \n on last print line for file to space output print.
-                string CurrFileName = Helpers.String(InStream.ReadBytes(15)).Trim('\0');
-                Log.Debug($"CurrFileName: {CurrFileName}\n");
+                int PathLength = InStream.ReadInt();
+                Log.Debug($"Path Length: {PathLength}");
+
+                string CurrFileName = Helpers.String(InStream.ReadBytes(PathLength));
+                Log.Debug($"CurrFileName: {CurrFileName}");
 
                 TableOffset = InStream.Position();
+
                 //Go to start of file
                 InStream.Seek(FileOffset);
 
                 byte[] FileContents = InStream.ReadBytes(FileLength);
-                Helpers.Write(InStream.FilePath, CurrFileName, FileContents);
+                //LZMA compressed
+                Helpers.Write(InStream.FilePath, CurrFileName, Compression_Manager.LZ4Decompress(FileContents));
 
                 //Go back to look up table
                 InStream.Seek(TableOffset);
             }
 
             //Return that extraction was sucessful.
-            //If there is a faliure condition, you can return false,
-            //and the core will try a different plugin.
             return true;
         }
     }

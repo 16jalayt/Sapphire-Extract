@@ -8,7 +8,7 @@ namespace Sapphire_Extract
     {
         private static void Main(string[] args)
         {
-            //TODO: call cli parse, set logger
+            //TODO: use core.options.verbose
             using var log = new LoggerConfiguration()
 #if DEBUG
                 .MinimumLevel.Verbose()
