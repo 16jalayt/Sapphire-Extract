@@ -1,12 +1,6 @@
 ﻿using Serilog;
 using SevenZipExtractor;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sapphire_Extract_Helpers
 {
@@ -28,9 +22,11 @@ namespace Sapphire_Extract_Helpers
             using (MemoryStream comp = new MemoryStream(input))
             using (ArchiveFile archiveFile = new ArchiveFile(comp, SevenZipFormat.Lzma))
             {
+                //TODO: refactor? will only trigger once
                 foreach (Entry entry in archiveFile.Entries)
                 {
-                    Log.Debug($"Archive File Name: {entry.FileName}");
+                    if (entry.FileName != null)
+                        Log.Debug($"Archive File Name: {entry.FileName}");
 
                     MemoryStream decomp = new MemoryStream();
                     entry.Extract(decomp);

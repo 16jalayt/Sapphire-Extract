@@ -1,9 +1,7 @@
 ﻿using Plugin_Contract;
 using Sapphire_Extract_Helpers;
 using Serilog;
-using System;
 using System.IO;
-using System.Text.RegularExpressions;
 
 namespace DAT_Gunnar
 {
@@ -13,7 +11,8 @@ namespace DAT_Gunnar
         /// <summary>
         /// Pretty text that shows in the error logs to identify the plugin.
         /// </summary>
-        public string Name { get { return "DAT Gunnar"; } }
+        public string Name
+        { get { return "DAT Gunnar"; } }
 
         /*/// <summary>
         /// Get the priority of the plugin. Lower is higher priority. Normal Priority: 100
@@ -77,7 +76,7 @@ namespace DAT_Gunnar
             //Test if C wide string by looking if second byte of 1st letter is null
             InStream.Skip(1);
             bool IsWide = false;
-            if (InStream.ReadBytes(1)[0]==0)
+            if (InStream.ReadBytes(1)[0] == 0)
                 IsWide = true;
             //Go back to table entry start.
             InStream.Seek(TableOffset);

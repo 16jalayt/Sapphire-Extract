@@ -1,7 +1,5 @@
-﻿using CommandLine;
-using McMaster.NETCore.Plugins;
+﻿using McMaster.NETCore.Plugins;
 using Plugin_Contract;
-using Priority_Queue;
 using Sapphire_Extract_Helpers;
 using Serilog;
 using System;
@@ -23,74 +21,14 @@ namespace Sapphire_Extract_Common
         //have variable input files. core should take in list or single file name and marshal
         //  the (later) threads and trigger the extraction events (also in core)
 
-        //fileList technically private, as is an array, and plugin operates on single file in parameter
-        public static List<string> FileList { get; set; } = new List<string>();
-
-        public static bool Verbose { get; set; }
-        //public static bool OverwriteAll { get; set; }
-        //public static bool AutoRename { get; set; }
-        //public static bool Raw { get; set; }
-
         private static List<IPlugin> PluginList = new List<IPlugin>();
         //private static SimplePriorityQueue<IPlugin> PluginQueue = new SimplePriorityQueue<IPlugin>();
-
-        public class CommandLineOptions
-        {
-            //BUG: not catching required
-            [Value(0, MetaName = "input file", HelpText = "Input file to be processed.", Required = true)]
-            public IEnumerable<string> FileName { get; set; }
-
-            //TODO: change to string to match serilog?
-            [Option(shortName: 'v', longName: "verbose", HelpText = "Print out all messages", Required = false, Default = false)]
-            public bool Verbose { get; set; }
-
-            [Option(shortName: 'o', longName: "overwrite", HelpText = "Overwrite all files if exists", Required = false, Default = false)]
-            public bool OverwriteAll { get; set; }
-
-            [Option(shortName: 'r', longName: "rename", HelpText = "Auto rename existing files", Required = false, Default = false)]
-            public bool AutoRename { get; set; }
-
-            [Option(shortName: 'c', longName: "raw", HelpText = "Do not decompile scripts", Required = false, Default = false)]
-            public bool Raw { get; set; }
-
-            //TODO: add output dir?, optional log file
-        }
-
-        private static int ParseSuccess(CommandLineOptions options)
-        {
-            foreach (string path in options.FileName)
-            {
-                FileList.Add(path);
-            }
-            //Pop first argument (assembly name) from file list
-            FileList.RemoveAt(0);
-
-            Verbose = options.Verbose;
-            //OverwriteAll = options.OverwriteAll;
-            //AutoRename = options.AutoRename;
-            //Raw = options.Raw;
-            Helpers.setAutoRename(options.AutoRename);
-            Helpers.setOverwriteAll(options.OverwriteAll);
-            Helpers.setRaw(options.Raw);
-            return 1;
-        }
-
-        private static int ParseFail(IEnumerable<CommandLine.Error> errs)
-        {
-            foreach (CommandLine.Error err in errs)
-                Serilog.Log.Fatal($"CLI error of: '{err}");
-            return 1;
-        }
 
         /// <summary>
         /// Parse CLI arguments and init plugins.
         /// </summary>
-        public static void init()
+        public static void InitPlugins()
         {
-            //Parse cli
-            Parser.Default.ParseArguments<CommandLineOptions>(Environment.GetCommandLineArgs()).MapResult(
-                options => ParseSuccess(options), err => ParseFail(err));
-
             //Load plugins after known valid usage
             var loaders = new List<PluginLoader>();
 
@@ -122,7 +60,7 @@ namespace Sapphire_Extract_Common
 
                     plugin.Init(Log.ForContext("SourceContext", "myDll"));
                     //TODO: replace with dll name?
-                    Log.Information($"Loaded plugin: '{plugin?.Name}'.");
+                    Log.Verbose($"Loaded plugin: '{plugin?.Name}'.");
                     PluginList.Add(plugin);
                     //PluginQueue.Enqueue(plugin, plugin.Priority);
                 }
@@ -136,7 +74,7 @@ namespace Sapphire_Extract_Common
         /// <returns>sucess</returns>
         public static bool ExtractFile(string FileName)
         {
-            if(!File.Exists(FileName))
+            if (!File.Exists(FileName))
             {
                 Log.Error($"The file: '{FileName}' does not exist.\n");
                 return false;

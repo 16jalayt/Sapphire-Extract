@@ -10,7 +10,8 @@ namespace TBV_Dynamix
         /// <summary>
         /// Pretty text that shows in the error logs to identify the plugin.
         /// </summary>
-        public string Name { get { return "TBV Dynamix"; } }
+        public string Name
+        { get { return "TBV Dynamix"; } }
 
         /*/// <summary>
         /// Get the priority of the plugin. Lower is higher priority. Normal Priority: 100
@@ -70,13 +71,13 @@ namespace TBV_Dynamix
             Helpers.AssertValue(InStream, new byte[] { 0x00, 0x00 });
 
             //Dev's name/email null padded? RichRayl@CUC\0\0...
-            Helpers.AssertValue(InStream, new byte[] { 0x52, 0x69, 0x63, 0x68, 0x52, 0x61, 0x79, 0x6C, 0x40, 0x43, 0x55, 0x43, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00});
+            Helpers.AssertValue(InStream, new byte[] { 0x52, 0x69, 0x63, 0x68, 0x52, 0x61, 0x79, 0x6C, 0x40, 0x43, 0x55, 0x43, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 });
 
             //End of entry in file table
             long TableOffset;
 
             for (int i = 0; i < NumFiles; i++)
-            {                
+            {
                 //Unknown. Different for each file
                 InStream.Skip(4);
 

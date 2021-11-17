@@ -9,7 +9,8 @@ namespace PAK_Minigolf
         /// <summary>
         /// Pretty text that shows in the error logs to identify the plugin.
         /// </summary>
-        public string Name { get { return "Example Plugin"; } }
+        public string Name
+        { get { return "Example Plugin"; } }
 
         /*/// <summary>
         /// Get the priority of the plugin. Lower is higher priority. Normal Priority: 100
@@ -80,7 +81,7 @@ namespace PAK_Minigolf
                 Log.Debug($"Path Length: {PathLength}");
 
                 string CurrFileName = Helpers.String(InStream.ReadBytes(PathLength));
-                Log.Debug($"CurrFileName: {CurrFileName}");
+                Log.Information($"CurrFileName: {CurrFileName}");
 
                 TableOffset = InStream.Position();
 
@@ -90,6 +91,8 @@ namespace PAK_Minigolf
                 byte[] FileContents = InStream.ReadBytes(FileLength);
                 //LZMA compressed
                 Helpers.Write(InStream.FilePath, CurrFileName, Compression_Manager.LZ4Decompress(FileContents));
+
+                Log.Debug("");
 
                 //Go back to look up table
                 InStream.Seek(TableOffset);

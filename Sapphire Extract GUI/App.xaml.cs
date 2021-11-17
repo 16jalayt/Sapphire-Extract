@@ -28,7 +28,7 @@ namespace Sapphire_Extract_GUI
             Serilog.Log.Logger = log;
             //Serilog.Log.Information("Hello World!");
 
-            Core.init();
+            Core.InitPlugins();
         }
     }
 }
