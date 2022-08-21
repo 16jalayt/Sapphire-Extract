@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.IO;
 using System.Text;
 
@@ -119,7 +120,7 @@ namespace Sapphire_Extract_Helpers
         private void print(string msg, string data)
         {
             if (msg.Length != 0 && debugprint)
-                Console.WriteLine(msg + data);
+                Log.Debug(msg + data);
         }
 
         public void Dispose()

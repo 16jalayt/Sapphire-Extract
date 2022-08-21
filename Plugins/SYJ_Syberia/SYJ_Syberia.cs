@@ -1,6 +1,5 @@
 ﻿using Plugin_Contract;
 using Sapphire_Extract_Helpers;
-using Serilog;
 using System.IO;
 using System.Linq;
 

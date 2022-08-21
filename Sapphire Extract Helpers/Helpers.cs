@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 
 namespace Sapphire_Extract_Helpers
 {
@@ -21,8 +22,8 @@ namespace Sapphire_Extract_Helpers
             if (!Equal(readValues, val))
             {
                 //TODO:figure out better output. prints int
-                Console.WriteLine($"Value in file {InStream.FileName} at position '{InStream.Position()}'...");
-                Console.WriteLine($"Expected value '{Hex(val)}' got '{Hex(readValues)}'");
+                Log.Warning($"Value in file {InStream.FileName} at position '{InStream.Position()}'...");
+                Log.Warning($"Expected value '{Hex(val)}' got '{Hex(readValues)}'");
                 return false;
             }
             return true;
@@ -40,8 +41,8 @@ namespace Sapphire_Extract_Helpers
             if (readValue != val)
             {
                 //TODO:figure out better output. prints int
-                Console.WriteLine($"Value in file {InStream.FileName} at position '{InStream.Position()}'...");
-                Console.WriteLine($"Expected value '{val}' got '{readValue}'");
+                Log.Warning($"Value in file {InStream.FileName} at position '{InStream.Position()}'...");
+                Log.Warning($"Expected value '{val}' got '{readValue}'");
                 return false;
             }
             return true;
@@ -64,8 +65,8 @@ namespace Sapphire_Extract_Helpers
             if (readValue != val)
             {
                 //TODO:figure out better output. prints int
-                Console.WriteLine($"Value in file {InStream.FileName} at position '{InStream.Position() - 4}'...");
-                Console.WriteLine($"Expected value '{val}' got '{readValue}'");
+                Log.Warning($"Value in file {InStream.FileName} at position '{InStream.Position() - 4}'...");
+                Log.Warning($"Expected value '{val}' got '{readValue}'");
                 return false;
             }
             return true;
@@ -93,8 +94,8 @@ namespace Sapphire_Extract_Helpers
             if (readValue != val)
             {
                 //TODO:figure out better output. prints int
-                Console.WriteLine($"Value in file {InStream.FileName} at position '{InStream.Position() - 2}'...");
-                Console.WriteLine($"Expected value '{val}' got '{readValue}'");
+                Log.Warning($"Value in file {InStream.FileName} at position '{InStream.Position() - 2}'...");
+                Log.Warning($"Expected value '{val}' got '{readValue}'");
                 return false;
             }
             return true;
@@ -121,8 +122,8 @@ namespace Sapphire_Extract_Helpers
             //Log.Warning(readValues);
             if (readValues != val)
             {
-                Console.WriteLine($"Value in file {InStream.FileName} at position '{position}'...");
-                Console.WriteLine($"Expected value '{val}' got '{readValues}'");
+                Log.Warning($"Value in file {InStream.FileName} at position '{position}'...");
+                Log.Warning($"Expected value '{val}' got '{readValues}'");
                 return false;
             }
             else
@@ -138,8 +139,8 @@ namespace Sapphire_Extract_Helpers
             //Log.Warning(readValues);
             if (readValues != val)
             {
-                Console.WriteLine($"Value in file {InStream.FileName} at position '{InStream.Position()}'...");
-                Console.WriteLine($"Expected value '{val}' got '{readValues}'");
+                Log.Warning($"Value in file {InStream.FileName} at position '{InStream.Position()}'...");
+                Log.Warning($"Expected value '{val}' got '{readValues}'");
                 return false;
             }
             else

@@ -56,7 +56,7 @@ namespace PAK_Minigolf
             //Log.Warning($"Plugin '{Name}' is not finished. Will likely spew out garbage.");
 
             //Seek past magic (tongas_pack_v20000)
-            InStream.Seek(18);
+            Helpers.AssertString(InStream, "tongas_pack_v20000");
 
             //# of files (4 bytes)
             int NumFiles = InStream.ReadInt();
@@ -71,14 +71,9 @@ namespace PAK_Minigolf
             for (int i = 0; i < NumFiles; i++)
             {
                 //Offset of current file in container
-                int FileOffset = InStream.ReadInt();
-                Log.Debug($"File offset: {FileOffset}");
-
-                int FileLength = InStream.ReadInt();
-                Log.Debug($"File Length: {FileLength}");
-
-                int PathLength = InStream.ReadInt();
-                Log.Debug($"Path Length: {PathLength}");
+                int FileOffset = InStream.ReadInt("File offset: ");
+                int FileLength = InStream.ReadInt("File Length: ");
+                int PathLength = InStream.ReadInt("Path Length: ");
 
                 string CurrFileName = Helpers.String(InStream.ReadBytes(PathLength));
                 Log.Information($"CurrFileName: {CurrFileName}");

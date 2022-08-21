@@ -57,8 +57,7 @@ namespace TBV_Dynamix
             //Log.Warning($"Plugin '{Name}' is not finished. Will likely spew out garbage.");
             Log.Warning($"Some files may error with an EOF exception.This appears to be Dynamix's fault.");
 
-            //Seek past magic (TBVolume)
-            InStream.Seek(9);
+            Helpers.AssertString(InStream, "TBVolume");
 
             //Unknown value. Seems to always stay same. Version?
             Helpers.AssertValue(InStream, new byte[] { 0xD0, 0x07 });
@@ -71,6 +70,8 @@ namespace TBV_Dynamix
             Helpers.AssertValue(InStream, new byte[] { 0x00, 0x00 });
 
             //Dev's name/email null padded? RichRayl@CUC\0\0...
+            //Have to use assertvalue insted of assert string because
+            //string doesn't like the @ and trailing nulls
             Helpers.AssertValue(InStream, new byte[] { 0x52, 0x69, 0x63, 0x68, 0x52, 0x61, 0x79, 0x6C, 0x40, 0x43, 0x55, 0x43, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 });
 
             //End of entry in file table
@@ -93,8 +94,8 @@ namespace TBV_Dynamix
                 //string CurrFileName = Helpers.String(InStream.ReadBytes(24)).Replace("\0", string.Empty);
                 Log.Debug($"CurrFileName: {CurrFileName}");
 
-                int FileLength = InStream.ReadInt();
-                Log.Debug($"File Length: {FileLength}\n");
+
+                int FileLength = InStream.ReadInt("File Length: ");
 
                 byte[] FileContents = InStream.ReadBytes(FileLength);
                 Helpers.Write(InStream.FilePath, CurrFileName, FileContents);

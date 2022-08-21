@@ -95,10 +95,8 @@ namespace DAT_Gunnar
                 Log.Debug($"CurrFileName: {CurrFileName}");
 
                 //Offset of current file in container
-                int FileOffset = InStream.ReadInt();
-                Log.Debug($"File offset: {FileOffset}");
-                int FileLength = InStream.ReadInt();
-                Log.Debug($"File length: {FileLength}");
+                int FileOffset = InStream.ReadInt("File offset: ");
+                int FileLength = InStream.ReadInt("File length: ");
 
                 //Unknown int and 20 padding
                 if (!IsWide)
