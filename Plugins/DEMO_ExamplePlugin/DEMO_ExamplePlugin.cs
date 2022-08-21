@@ -18,6 +18,7 @@ namespace DEMO_ExamplePlugin
         /// </summary>
         public string Name { get { return "Example Plugin"; } }
 
+        //Unimplemented
         /*/// <summary>
         /// Get the priority of the plugin. Lower is higher priority. Normal Priority: 100
         /// </summary>
@@ -77,7 +78,7 @@ namespace DEMO_ExamplePlugin
             //different file variations to aid in research. A FAILED ASSERT WILL NOT END PLUGIN! just display a warning.
             //However, it will return a bool, so you can use an "if(!assert) return false" to fail the extraction.
 
-            //Unknown value. Seems to always stay same. Version likely 2.1
+            //Version 2.1
             Helpers.AssertValue(InStream, new byte[] { 0x02, 0x01 });
 
             //# of files (4 bytes)
@@ -92,8 +93,10 @@ namespace DEMO_ExamplePlugin
             for (int i = 0; i < NumFiles; i++)
             {
                 //Offset of current file in container
-                int FileOffset = InStream.ReadInt();
-                Log.Debug($"File offset: {FileOffset}");
+                //The read functions will also take an optional string
+                //that will be logged at debug level. This method is prefered.
+                //The alternative is the next ReadInt().
+                int FileOffset = InStream.ReadInt("File offset: ");
 
                 int FileLength = InStream.ReadInt();
                 Log.Debug($"File Length: {FileLength}");

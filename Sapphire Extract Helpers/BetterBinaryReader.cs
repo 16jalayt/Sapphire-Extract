@@ -9,10 +9,17 @@ namespace Sapphire_Extract_Helpers
     {
         private FileStream _fs;
         private BinaryReader _br;
+
+        //file.ext
         public string FileName { get; }
+        //file
         public string FileNameWithoutExtension { get; }
+        //.ext
         public string FileExtension { get; }
+        //C:\\folder\\file.ext
         public string FilePath { get; }
+        //C:\\folder\\
+        public string FileDirectory { get; }
 
         public bool debugprint = false;
 
@@ -22,6 +29,7 @@ namespace Sapphire_Extract_Helpers
             FileNameWithoutExtension = Path.GetFileNameWithoutExtension(FilePath);
             FileExtension = Path.GetExtension(FilePath);
             FileName = Path.GetFileName(FilePath);
+            FileDirectory = Path.GetDirectoryName(FilePath);
             _fs = new FileStream(@filePath, FileMode.Open);
             _br = new BinaryReader(_fs, Encoding.Default);
         }
