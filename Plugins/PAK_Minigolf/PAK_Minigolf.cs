@@ -10,7 +10,7 @@ namespace PAK_Minigolf
         /// Pretty text that shows in the error logs to identify the plugin.
         /// </summary>
         public string Name
-        { get { return "Example Plugin"; } }
+        { get { return "PAK Minigolf"; } }
 
         /*/// <summary>
         /// Get the priority of the plugin. Lower is higher priority. Normal Priority: 100
@@ -53,7 +53,7 @@ namespace PAK_Minigolf
         /// <returns></returns>
         public bool Extract(BetterBinaryReader InStream)
         {
-            Log.Warning($"Plugin '{Name}' is not finished. Will likely spew out garbage.");
+            //Log.Warning($"Plugin '{Name}' is not finished. Will likely spew out garbage.");
 
             //Seek past magic (tongas_pack_v20000)
             InStream.Seek(18);
@@ -90,7 +90,7 @@ namespace PAK_Minigolf
 
                 byte[] FileContents = InStream.ReadBytes(FileLength);
                 //LZMA compressed
-                Helpers.Write(InStream.FilePath, CurrFileName, Compression_Manager.LZ4Decompress(FileContents));
+                Helpers.Write(InStream.FilePath, CurrFileName, Compression_Manager.LZ4DecompressChunk(FileContents));
 
                 Log.Debug("");
 

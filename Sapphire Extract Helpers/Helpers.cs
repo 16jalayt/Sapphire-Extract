@@ -1,5 +1,4 @@
-﻿using Serilog;
-using System;
+﻿using System;
 
 namespace Sapphire_Extract_Helpers
 {
@@ -22,8 +21,27 @@ namespace Sapphire_Extract_Helpers
             if (!Equal(readValues, val))
             {
                 //TODO:figure out better output. prints int
-                Log.Warning($"Value in file {InStream.FileName} at position '{InStream.Position()}'...");
-                Log.Warning($"Expected value '{Hex(val)}' got '{Hex(readValues)}'");
+                Console.WriteLine($"Value in file {InStream.FileName} at position '{InStream.Position()}'...");
+                Console.WriteLine($"Expected value '{Hex(val)}' got '{Hex(readValues)}'");
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Read an byte and print if not equal.
+        /// </summary>
+        /// <param name="InStream"></param>
+        /// <param name="val"></param>
+        /// <returns>Truth</returns>
+        public static bool AssertByte(BetterBinaryReader InStream, int val)
+        {
+            byte readValue = InStream.ReadByte();
+            if (readValue != val)
+            {
+                //TODO:figure out better output. prints int
+                Console.WriteLine($"Value in file {InStream.FileName} at position '{InStream.Position()}'...");
+                Console.WriteLine($"Expected value '{val}' got '{readValue}'");
                 return false;
             }
             return true;
@@ -35,17 +53,56 @@ namespace Sapphire_Extract_Helpers
         /// <param name="InStream"></param>
         /// <param name="val"></param>
         /// <returns>Truth</returns>
-        public static bool AssertInt(BetterBinaryReader InStream, int val)
+        public static bool AssertInt(BetterBinaryReader InStream, int val, bool LittleEndian = true)
         {
-            int readValue = InStream.ReadInt();
+            int readValue = 0;
+            if (LittleEndian)
+                readValue = InStream.ReadInt();
+            else
+                readValue = InStream.ReadInt();
+
             if (readValue != val)
             {
                 //TODO:figure out better output. prints int
-                Log.Warning($"Value in file {InStream.FileName} at position '{InStream.Position()}'...");
-                Log.Warning($"Expected value '{val}' got '{readValue}'");
+                Console.WriteLine($"Value in file {InStream.FileName} at position '{InStream.Position() - 4}'...");
+                Console.WriteLine($"Expected value '{val}' got '{readValue}'");
                 return false;
             }
             return true;
+        }
+
+        public static bool AssertIntBE(BetterBinaryReader InStream, short val)
+        {
+            return AssertInt(InStream, val, false);
+        }
+
+        /// <summary>
+        /// Read a short and print if not equal.
+        /// </summary>
+        /// <param name="InStream"></param>
+        /// <param name="val"></param>
+        /// <returns>Truth</returns>
+        public static bool AssertShort(BetterBinaryReader InStream, short val, bool LittleEndian = true)
+        {
+            short readValue = 0;
+            if (LittleEndian)
+                readValue = InStream.ReadShort();
+            else
+                readValue = InStream.ReadShortBE();
+
+            if (readValue != val)
+            {
+                //TODO:figure out better output. prints int
+                Console.WriteLine($"Value in file {InStream.FileName} at position '{InStream.Position() - 2}'...");
+                Console.WriteLine($"Expected value '{val}' got '{readValue}'");
+                return false;
+            }
+            return true;
+        }
+
+        public static bool AssertShortBE(BetterBinaryReader InStream, short val)
+        {
+            return AssertShort(InStream, val, false);
         }
 
         /// <summary>
@@ -54,17 +111,37 @@ namespace Sapphire_Extract_Helpers
         /// <param name="InStream"></param>
         /// <param name="val"></param>
         /// <returns></returns>
-        public static bool AssertString(BetterBinaryReader InStream, string val)
+        public static bool AssertString(BetterBinaryReader InStream, string val, bool TrimEnd = false)
         {
+            long position = InStream.Position();
+            string readValues = String(InStream.ReadBytes(val.Length));
+            if (TrimEnd == true)
+                readValues = readValues.TrimEnd();
+            //string readValues = String(InStream.ReadBytes(val.Length));
+            //Log.Warning(readValues);
+            if (readValues != val)
+            {
+                Console.WriteLine($"Value in file {InStream.FileName} at position '{position}'...");
+                Console.WriteLine($"Expected value '{val}' got '{readValues}'");
+                return false;
+            }
+            else
+                return true;
+        }
+
+        //same as assert string but with reset steam.
+        public static bool AssertHeader(BetterBinaryReader InStream, string val)
+        {
+            InStream.Seek(0);
             string readValues = String(InStream.ReadBytes(val.Length));
             //string readValues = String(InStream.ReadBytes(val.Length));
             //Log.Warning(readValues);
             if (readValues != val)
             {
-                Log.Warning($"Value in file {InStream.FileName} at position '{InStream.Position()}'...");
-                Log.Warning($"Expected value '{val}' got '{readValues}'");
+                Console.WriteLine($"Value in file {InStream.FileName} at position '{InStream.Position()}'...");
+                Console.WriteLine($"Expected value '{val}' got '{readValues}'");
                 return false;
-            }   
+            }
             else
                 return true;
         }
@@ -81,22 +158,25 @@ namespace Sapphire_Extract_Helpers
         /// <param name="fileName"></param>
         /// <param name="fileContents"></param>
         /// <param name="subdir"></param>
-        public static void Write(string filePath, string fileName, byte[] fileContents, bool subdir = true)
+        public static string Write(string filePath, string fileName, byte[] fileContents, bool subdir = true)
         {
             //It means to interpret the string literally
             //@"\\servername\share\folder"
             //is nicer than this:
             //"\\\\servername\\share\\folder"
-            Writer.WriteFile(@filePath, fileName, fileContents, subdir);
+            return Writer.WriteFile(@filePath, fileName, fileContents, subdir);
         }
+
         public static void setOverwriteAll(bool val)
         {
             Writer.OverwriteAll = val;
         }
+
         public static void setAutoRename(bool val)
         {
             Writer.AutoRename = val;
         }
+
         public static void setRaw(bool val)
         {
             Raw = val;
@@ -106,6 +186,7 @@ namespace Sapphire_Extract_Helpers
         {
             return BitConverter.ToString(inArray).Replace("-", ", ");
         }
+
         public static string String(byte[] inArray)
         {
             return System.Text.Encoding.UTF8.GetString(inArray);

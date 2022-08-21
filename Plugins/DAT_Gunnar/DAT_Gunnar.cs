@@ -41,7 +41,7 @@ namespace DAT_Gunnar
         /// <returns></returns>
         public bool CanExtract(BetterBinaryReader InStream)
         {
-            //If the file has wrong id, say we can't extract.
+            //If the file has wrong extension, say we can't extract.
             if (Path.GetExtension(InStream.FileName) == ".dat")
                 return true;
             else

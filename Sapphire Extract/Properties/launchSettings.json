@@ -2,7 +2,7 @@
   "profiles": {
     "Sapphire Extract": {
       "commandName": "Project",
-      "commandLineArgs": "\"mgolf.pak\" -o -v"
+      "commandLineArgs": "\"sc42130-0.syj\" -o -v"
     }
   }
 }
