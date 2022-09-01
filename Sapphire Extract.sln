@@ -40,6 +40,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SYJ_Syberia", "Plugins\SYJ_
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZIP_Genaric", "Plugins\ZIP_Genaric\ZIP_Genaric.csproj", "{A7D0BC10-99FC-45A2-970F-478365172D52}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DATA_Sandlot", "Plugins\DATA_Sandlot\DATA_Sandlot.csproj", "{BB9BF365-E98A-400C-A80F-9F0D88A074B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,6 +92,10 @@ Global
 		{A7D0BC10-99FC-45A2-970F-478365172D52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7D0BC10-99FC-45A2-970F-478365172D52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7D0BC10-99FC-45A2-970F-478365172D52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB9BF365-E98A-400C-A80F-9F0D88A074B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB9BF365-E98A-400C-A80F-9F0D88A074B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB9BF365-E98A-400C-A80F-9F0D88A074B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB9BF365-E98A-400C-A80F-9F0D88A074B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,6 +107,7 @@ Global
 		{7180B20A-DB4C-4A2B-A107-E5BDD6C414D5} = {F064B585-78B9-44F9-95AE-B90C22B01E4E}
 		{0EF0FF05-ABAD-4A56-87E5-FFB1775FED03} = {F064B585-78B9-44F9-95AE-B90C22B01E4E}
 		{A7D0BC10-99FC-45A2-970F-478365172D52} = {F064B585-78B9-44F9-95AE-B90C22B01E4E}
+		{BB9BF365-E98A-400C-A80F-9F0D88A074B0} = {F064B585-78B9-44F9-95AE-B90C22B01E4E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {626CEA91-A434-47DA-A700-E1FE9BAF0E89}
