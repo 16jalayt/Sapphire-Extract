@@ -124,6 +124,11 @@ namespace Sapphire_Extract_Helpers
         {
             return _br.BaseStream;
         }
+		
+		public short ReadShort()
+        {
+            return _br.ReadInt16();
+        }
 
         private void print(string msg, string data)
         {

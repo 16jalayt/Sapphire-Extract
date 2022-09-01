@@ -47,6 +47,25 @@ namespace Sapphire_Extract_Helpers
             }
             return true;
         }
+		
+		/// <summary>
+        /// Read a short and print if not equal.
+        /// </summary>
+        /// <param name="InStream"></param>
+        /// <param name="val"></param>
+        /// <returns>Truth</returns>
+        public static bool AssertShort(BetterBinaryReader InStream, short val)
+        {
+            short readValue = InStream.ReadShort();
+            if (readValue != val)
+            {
+                //TODO:figure out better output. prints int
+                Console.WriteLine($"Value in file {InStream.FileName} at position '{InStream.Position()}'...");
+                Console.WriteLine($"Expected value '{val}' got '{readValue}'");
+                return false;
+            }
+            return true;
+        }
 
         /// <summary>
         /// Read an int and print if not equal.
