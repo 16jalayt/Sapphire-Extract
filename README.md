@@ -1,5 +1,5 @@
 # Sapphire-Extract
-This is a rewrite of Sapphire Extract previously in java. Very little functionality has been implemented.
+This is a rewrite of Sapphire Extract previously in java. This project will extract files from various video games. Only some of the formats from java have been reimplemented. Currently implemented formats can be found in the plugins folder.
 
 TODO: cleanup
 To add a new format, place the template plugin zip under "Documents\Visual Studio 2019\Templates\ProjectTemplates"
