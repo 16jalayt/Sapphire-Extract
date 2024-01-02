@@ -44,6 +44,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DATA_Sandlot", "Plugins\DAT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIF_HerInteractive", "Plugins\CIF_HerInteractive\CIF_HerInteractive.csproj", "{228E27D6-03A9-4625-9B5C-78F5CA34A80B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDS_SmartSound", "Plugins\SDS_SmartSound\SDS_SmartSound.csproj", "{01E300B6-BF80-47B6-82AC-0533F5A8F26C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,6 +104,10 @@ Global
 		{228E27D6-03A9-4625-9B5C-78F5CA34A80B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{228E27D6-03A9-4625-9B5C-78F5CA34A80B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{228E27D6-03A9-4625-9B5C-78F5CA34A80B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01E300B6-BF80-47B6-82AC-0533F5A8F26C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01E300B6-BF80-47B6-82AC-0533F5A8F26C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01E300B6-BF80-47B6-82AC-0533F5A8F26C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01E300B6-BF80-47B6-82AC-0533F5A8F26C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -115,6 +121,7 @@ Global
 		{A7D0BC10-99FC-45A2-970F-478365172D52} = {F064B585-78B9-44F9-95AE-B90C22B01E4E}
 		{BB9BF365-E98A-400C-A80F-9F0D88A074B0} = {F064B585-78B9-44F9-95AE-B90C22B01E4E}
 		{228E27D6-03A9-4625-9B5C-78F5CA34A80B} = {F064B585-78B9-44F9-95AE-B90C22B01E4E}
+		{01E300B6-BF80-47B6-82AC-0533F5A8F26C} = {F064B585-78B9-44F9-95AE-B90C22B01E4E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {626CEA91-A434-47DA-A700-E1FE9BAF0E89}

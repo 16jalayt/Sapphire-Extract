@@ -4,7 +4,6 @@
     <TargetFramework>net8.0</TargetFramework>
     <Authors>16jalayt</Authors>
     <Company>Sapphire Forge</Company>
-    
     <Version>0.0.1</Version>
     <Copyright>2021</Copyright>
   </PropertyGroup>
