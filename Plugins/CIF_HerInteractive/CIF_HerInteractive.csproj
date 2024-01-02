@@ -1,22 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Authors>16jalayt</Authors>
     <Company>Sapphire Forge</Company>
-    <Product>TBV_Dynamix</Product>
     <Version>0.0.1</Version>
     <Copyright>2021</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog" Version="2.11.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Plugin Contract\Plugin Contract.csproj" />
     <ProjectReference Include="..\..\Sapphire Extract Common\Sapphire Extract Common.csproj" />
-    <ProjectReference Include="..\Plugin Contract\Plugin Contract.csproj" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
