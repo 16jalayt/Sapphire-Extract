@@ -32,6 +32,7 @@ namespace Sapphire_Extract_Common
             //Load plugins after known valid usage
             var loaders = new List<PluginLoader>();
 
+            //TODO: move out of subfolders?
             // create plugin loaders
             var pluginsDir = Path.Combine(AppContext.BaseDirectory, "plugins");
             foreach (var dir in Directory.GetDirectories(pluginsDir))
