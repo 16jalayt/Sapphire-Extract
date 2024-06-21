@@ -12,12 +12,16 @@ namespace Sapphire_Extract_Helpers
 
         //file.ext
         public string FileName { get; }
+
         //file
         public string FileNameWithoutExtension { get; }
+
         //.ext
         public string FileExtension { get; }
+
         //C:\\folder\\file.ext
         public string FilePath { get; }
+
         //C:\\folder\\
         public string FileDirectory { get; }
 
@@ -115,6 +119,19 @@ namespace Sapphire_Extract_Helpers
             return data;
         }
 
+        public string ReadNullTerminatedString()
+        {
+            StringBuilder builder = new StringBuilder();
+            byte c = 1;
+            while (c != 0)
+            {
+                c = ReadByte();
+                builder.Append((char)c);
+            }
+            string CurrFileName = builder.ToString();
+            return CurrFileName.Substring(0, CurrFileName.Length - 1);
+        }
+
         public bool IsEOF()
         {
             return this.Position() >= this.Length() ? true : false;
@@ -124,8 +141,8 @@ namespace Sapphire_Extract_Helpers
         {
             return _br.BaseStream;
         }
-		
-		public short ReadShort()
+
+        public short ReadShort()
         {
             return _br.ReadInt16();
         }

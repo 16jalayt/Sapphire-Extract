@@ -1,14 +1,16 @@
 ﻿using Plugin_Contract;
 using Sapphire_Extract_Helpers;
 using Serilog;
+
 //Version 1.0
 
 /*Remember to build solution manually before testing plugin!
  * Start debugging does NOT rebuild plugins!
- * 
+ *
  * This is an exmple plugin to show the basics of creating a plugin.
  *The example file is included in the example plugin directory.
  **/
+
 namespace DEMO_ExamplePlugin
 {
     internal class DEMO_ExamplePlugin : IPlugin
@@ -16,7 +18,8 @@ namespace DEMO_ExamplePlugin
         /// <summary>
         /// Pretty text that shows in the error logs to identify the plugin.
         /// </summary>
-        public string Name { get { return "Example Plugin"; } }
+        public string Name
+        { get { return "Example Plugin"; } }
 
         //Unimplemented
         /*/// <summary>
@@ -48,8 +51,9 @@ namespace DEMO_ExamplePlugin
         {
             //If the file has wrong id, say we can't extract
             //Note: can also get the file extension in case no magic
-            //It is prefered to identify by content not name for reliability
+            //It is prefered to identify by content and not name for reliability
             //if (Path.GetExtension(InStream.FileName) == ".demo")
+            //if (Helpers.AssertValue(InStream, new byte[] { 0xAC, 0xDC }))
             if (Helpers.AssertString(InStream, "DEMO"))
                 return true;
             else
@@ -69,8 +73,7 @@ namespace DEMO_ExamplePlugin
             //Seek past magic (DEMO)
             InStream.Seek(4);
 
-
-            //Note: best way to check for constant bytes is AssertValue, 
+            //Note: best way to check for constant bytes is AssertValue,
             //but can also use AssertString, like under CanExtract above,
             //but AssertString only works with plain text
 

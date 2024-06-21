@@ -16,7 +16,7 @@ namespace CIF_HerInteractive
         /// Pretty text that shows in the error logs to identify the plugin.
         /// </summary>
         public string Name
-        { get { return "Example Plugin"; } }
+        { get { return "CIF Her Interactive"; } }
 
         /*/// <summary>
         /// Get the priority of the plugin. Lower is higher priority. Normal Priority: 100
@@ -45,11 +45,7 @@ namespace CIF_HerInteractive
         /// <returns></returns>
         public bool CanExtract(BetterBinaryReader InStream)
         {
-            //If the file has wrong id, say we can't extract
-            //Note: can also get the file extension in case no magic
-            //It is prefered to identify by content not name for reliability
-            //if (Path.GetExtension(InStream.FileName) == ".demo")
-            if (Helpers.AssertString(InStream, "DEMO"))
+            if (Helpers.AssertString(InStream, "Nancy or whatever"))
                 return true;
             else
                 return false;

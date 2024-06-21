@@ -2,7 +2,7 @@
   "profiles": {
     "Sapphire Extract": {
       "commandName": "Project",
-      "commandLineArgs": "\"base.scs\" -o -v"
+      "commandLineArgs": "\"Westward2_00.data\" -o -v"
     }
   }
 }
