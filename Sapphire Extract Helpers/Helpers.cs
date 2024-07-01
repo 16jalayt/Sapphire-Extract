@@ -47,8 +47,8 @@ namespace Sapphire_Extract_Helpers
             }
             return true;
         }
-		
-		/// <summary>
+
+        /// <summary>
         /// Read a short and print if not equal.
         /// </summary>
         /// <param name="InStream"></param>
@@ -238,6 +238,16 @@ namespace Sapphire_Extract_Helpers
 
             // If we got here, equal
             return true;
+        }
+
+        public static int BitRotateLeft(int value, int count)
+        {
+            return (value << count) | (value >> (8 - count));
+        }
+
+        public static int BitRotateRight(int value, int count)
+        {
+            return (value >> count) | (value << (8 - count));
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Sapphire_Extract_Helpers
 {
     public class BetterBinaryReader
     {
-        private FileStream _fs;
+        private Stream _s;
         private BinaryReader _br;
 
         //file.ext
@@ -34,8 +34,56 @@ namespace Sapphire_Extract_Helpers
             FileExtension = Path.GetExtension(FilePath);
             FileName = Path.GetFileName(FilePath);
             FileDirectory = Path.GetDirectoryName(FilePath);
-            _fs = new FileStream(@filePath, FileMode.Open);
-            _br = new BinaryReader(_fs, Encoding.Default);
+            _s = new FileStream(@filePath, FileMode.Open);
+            _br = new BinaryReader(_s, Encoding.Default);
+        }
+
+        public BetterBinaryReader(byte[] fileContent, string filePath)
+        {
+            if (filePath != null && filePath != string.Empty)
+            {
+                FilePath = Path.GetFullPath(@filePath);
+                FileNameWithoutExtension = Path.GetFileNameWithoutExtension(FilePath);
+                FileExtension = Path.GetExtension(FilePath);
+                FileName = Path.GetFileName(FilePath);
+                FileDirectory = Path.GetDirectoryName(FilePath);
+            }
+
+            _s = new MemoryStream(fileContent);
+            _br = new BinaryReader(_s, Encoding.Default);
+        }
+
+        public BetterBinaryReader(byte[] fileContent, BetterBinaryReader copyFrom)
+        {
+            if (copyFrom != null)
+            {
+                //Copy parameters from another stream
+                FilePath = copyFrom.FilePath;
+                FileNameWithoutExtension = copyFrom.FileNameWithoutExtension;
+                FileExtension = copyFrom.FileExtension;
+                FileName = copyFrom.FileName;
+                FileDirectory = copyFrom.FileDirectory;
+            }
+
+            _s = new MemoryStream(fileContent);
+            _br = new BinaryReader(_s, Encoding.Default);
+        }
+
+        public BetterBinaryReader(Stream fileStream, BetterBinaryReader copyFrom)
+        {
+            if (copyFrom != null)
+            {
+                //Copy parameters from another stream
+                FilePath = copyFrom.FilePath;
+                FileNameWithoutExtension = copyFrom.FileNameWithoutExtension;
+                FileExtension = copyFrom.FileExtension;
+                FileName = copyFrom.FileName;
+                FileDirectory = copyFrom.FileDirectory;
+            }
+
+            _s = new MemoryStream();
+            fileStream.CopyTo(_s);
+            _br = new BinaryReader(_s, Encoding.Default);
         }
 
         public void Seek(long pos)
@@ -50,7 +98,7 @@ namespace Sapphire_Extract_Helpers
 
         public long Length()
         {
-            return _fs.Length;
+            return _br.BaseStream.Length;
         }
 
         public long Skip(long offset)
@@ -156,7 +204,7 @@ namespace Sapphire_Extract_Helpers
         public void Dispose()
         {
             _br.Dispose();
-            _fs.Dispose();
+            _s.Dispose();
         }
     }
 }

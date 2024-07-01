@@ -2,7 +2,7 @@
   "profiles": {
     "Sapphire Extract": {
       "commandName": "Project",
-      "commandLineArgs": "\"Westward2_00.data\" -o -v"
+      "commandLineArgs": "\"boostlist.xml\" -o -v"
     }
   }
 }
