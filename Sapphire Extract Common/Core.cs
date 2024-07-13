@@ -103,13 +103,13 @@ namespace Sapphire_Extract_Common
                     //Failed extraction
                     else
                     {
-                        Log.Error($"Failed to extract: '{FileName}' using plugin: '{plugin?.Name}'. Trying next plugin.");
+                        Log.Error($"\n\nFailed to extract: '{FileName}' using plugin: '{plugin?.Name}'. Trying next plugin.");
                     }
                 }
             }
             //Exit loop if failed to return during sucess.
             //This means no available plugins...
-            Log.Fatal($"Failed to extract: '{FileName}'. Not sucessful with any plugins.");
+            Log.Fatal($"\nFailed to extract: '{FileName}'. Not sucessful with any plugins.");
             InStream.Dispose();
             return false;
         }

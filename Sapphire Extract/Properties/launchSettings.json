@@ -2,7 +2,7 @@
   "profiles": {
     "Sapphire Extract": {
       "commandName": "Project",
-      "commandLineArgs": "\"boostlist.xml\" -o -v"
+      "commandLineArgs": "\"extras.mhk\" -o -v"
     }
   }
 }

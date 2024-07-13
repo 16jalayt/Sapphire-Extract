@@ -25,8 +25,6 @@ namespace Sapphire_Extract_Helpers
         //C:\\folder\\
         public string FileDirectory { get; }
 
-        public bool debugprint = false;
-
         public BetterBinaryReader(string filePath)
         {
             FilePath = Path.GetFullPath(@filePath);
@@ -119,9 +117,23 @@ namespace Sapphire_Extract_Helpers
             return data;
         }
 
+        public uint ReadUInt(string msg = "")
+        {
+            uint data = _br.ReadUInt32();
+            print(msg, data.ToString());
+            return data;
+        }
+
         public short ReadShort(string msg = "")
         {
             short data = _br.ReadInt16();
+            print(msg, data.ToString());
+            return data;
+        }
+
+        public ushort ReadUShort(string msg = "")
+        {
+            ushort data = _br.ReadUInt16();
             print(msg, data.ToString());
             return data;
         }
@@ -155,6 +167,24 @@ namespace Sapphire_Extract_Helpers
             byte[] data = ReadBytes(2);
             Array.Reverse(data);
             short dataout = BitConverter.ToInt16(data, 0);
+            print(msg, dataout.ToString());
+            return dataout;
+        }
+
+        public uint ReadUIntBE(string msg = "")
+        {
+            byte[] data = ReadBytes(4);
+            Array.Reverse(data);
+            uint dataout = BitConverter.ToUInt32(data, 0);
+            print(msg, dataout.ToString());
+            return dataout;
+        }
+
+        public ushort ReadUShortBE(string msg = "")
+        {
+            byte[] data = ReadBytes(2);
+            Array.Reverse(data);
+            ushort dataout = BitConverter.ToUInt16(data, 0);
             print(msg, dataout.ToString());
             return dataout;
         }
@@ -197,7 +227,7 @@ namespace Sapphire_Extract_Helpers
 
         private void print(string msg, string data)
         {
-            if (msg.Length != 0 && debugprint)
+            if (msg.Length != 0)
                 Log.Debug(msg + data);
         }
 

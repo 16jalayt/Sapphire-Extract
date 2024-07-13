@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Sapphire_Extract
 {
-    internal class Program
+    internal static class Program
     {
         //fileList technically private, as is an array, and plugin operates on single file in parameter
         public static List<string> FileList { get; set; } = new List<string>();

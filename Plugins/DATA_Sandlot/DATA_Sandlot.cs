@@ -42,8 +42,8 @@ namespace DATA_Sandlot
         /// <returns></returns>
         public bool CanExtract(BetterBinaryReader InStream)
         {
-            if (Path.GetExtension(InStream.FileName) == ".xml")
-                return true;
+            //if (Path.GetExtension(InStream.FileName) == ".xml")
+            //return true;
             if (Helpers.AssertValue(InStream, new byte[] { 0xAC, 0xDC }))
                 return true;
             InStream.Seek(0);

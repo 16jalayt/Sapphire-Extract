@@ -59,7 +59,6 @@ namespace CIF_HerInteractive
         public bool Extract(BetterBinaryReader InStream)
         {
             Log.Warning($"Plugin '{Name}' is not finished. Will likely spew out garbage.");
-            Log.Warning($"Put important info here like validated version numbers or warnings to users.");
 
             //Seek past magic (DEMO)
             InStream.Seek(4);

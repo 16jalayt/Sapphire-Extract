@@ -49,25 +49,6 @@ namespace Sapphire_Extract_Helpers
         }
 
         /// <summary>
-        /// Read a short and print if not equal.
-        /// </summary>
-        /// <param name="InStream"></param>
-        /// <param name="val"></param>
-        /// <returns>Truth</returns>
-        public static bool AssertShort(BetterBinaryReader InStream, short val)
-        {
-            short readValue = InStream.ReadShort();
-            if (readValue != val)
-            {
-                //TODO:figure out better output. prints int
-                Console.WriteLine($"Value in file {InStream.FileName} at position '{InStream.Position()}'...");
-                Console.WriteLine($"Expected value '{val}' got '{readValue}'");
-                return false;
-            }
-            return true;
-        }
-
-        /// <summary>
         /// Read an int and print if not equal.
         /// </summary>
         /// <param name="InStream"></param>
@@ -91,9 +72,50 @@ namespace Sapphire_Extract_Helpers
             return true;
         }
 
-        public static bool AssertIntBE(BetterBinaryReader InStream, short val)
+        /// <summary>
+        /// Read a big endian int and print if not equal.
+        /// </summary>
+        /// <param name="InStream"></param>
+        /// <param name="val"></param>
+        /// <returns>Truth</returns>
+        public static bool AssertIntBE(BetterBinaryReader InStream, int val)
         {
             return AssertInt(InStream, val, false);
+        }
+
+        /// <summary>
+        /// Read an int and print if not equal.
+        /// </summary>
+        /// <param name="InStream"></param>
+        /// <param name="val"></param>
+        /// <returns>Truth</returns>
+        public static bool AssertUInt(BetterBinaryReader InStream, uint val, bool LittleEndian = true)
+        {
+            uint readValue = 0;
+            if (LittleEndian)
+                readValue = InStream.ReadUInt();
+            else
+                readValue = InStream.ReadUInt();
+
+            if (readValue != val)
+            {
+                //TODO:figure out better output. prints int
+                Log.Warning($"Value in file {InStream.FileName} at position '{InStream.Position() - 4}'...");
+                Log.Warning($"Expected value '{val}' got '{readValue}'");
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Read an unsigned big endian int and print if not equal.
+        /// </summary>
+        /// <param name="InStream"></param>
+        /// <param name="val"></param>
+        /// <returns>Truth</returns>
+        public static bool AssertUIntBE(BetterBinaryReader InStream, ushort val)
+        {
+            return AssertUInt(InStream, val, false);
         }
 
         /// <summary>
@@ -120,9 +142,50 @@ namespace Sapphire_Extract_Helpers
             return true;
         }
 
+        /// <summary>
+        /// Read a big endian short and print if not equal.
+        /// </summary>
+        /// <param name="InStream"></param>
+        /// <param name="val"></param>
+        /// <returns>Truth</returns>
         public static bool AssertShortBE(BetterBinaryReader InStream, short val)
         {
             return AssertShort(InStream, val, false);
+        }
+
+        /// <summary>
+        /// Read an unsigned short and print if not equal.
+        /// </summary>
+        /// <param name="InStream"></param>
+        /// <param name="val"></param>
+        /// <returns>Truth</returns>
+        public static bool AssertUShort(BetterBinaryReader InStream, ushort val, bool LittleEndian = true)
+        {
+            ushort readValue = 0;
+            if (LittleEndian)
+                readValue = InStream.ReadUShort();
+            else
+                readValue = InStream.ReadUShortBE();
+
+            if (readValue != val)
+            {
+                //TODO:figure out better output. prints int
+                Log.Warning($"Value in file {InStream.FileName} at position '{InStream.Position() - 2}'...");
+                Log.Warning($"Expected value '{val}' got '{readValue}'");
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Read an unsigned big endian short and print if not equal.
+        /// </summary>
+        /// <param name="InStream"></param>
+        /// <param name="val"></param>
+        /// <returns>Truth</returns>
+        public static bool AssertUShortBE(BetterBinaryReader InStream, ushort val)
+        {
+            return AssertUShort(InStream, val, false);
         }
 
         /// <summary>
@@ -147,28 +210,6 @@ namespace Sapphire_Extract_Helpers
             }
             else
                 return true;
-        }
-
-        //same as assert string but with reset steam.
-        public static bool AssertHeader(BetterBinaryReader InStream, string val)
-        {
-            InStream.Seek(0);
-            string readValues = String(InStream.ReadBytes(val.Length));
-            //string readValues = String(InStream.ReadBytes(val.Length));
-            //Log.Warning(readValues);
-            if (readValues != val)
-            {
-                Log.Warning($"Value in file {InStream.FileName} at position '{InStream.Position()}'...");
-                Log.Warning($"Expected value '{val}' got '{readValues}'");
-                return false;
-            }
-            else
-                return true;
-        }
-
-        //may not use
-        public static void AssertValueAbort(byte[] val)
-        {
         }
 
         /// <summary>
