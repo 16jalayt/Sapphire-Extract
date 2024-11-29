@@ -189,14 +189,6 @@ namespace Sapphire_Extract_Helpers
             return dataout;
         }
 
-        public byte[] ReadBytesBE(int len, string msg = "")
-        {
-            byte[] data = ReadBytes(len);
-            Array.Reverse(data);
-            print(msg, data.ToString());
-            return data;
-        }
-
         public string ReadNullTerminatedString()
         {
             StringBuilder builder = new StringBuilder();

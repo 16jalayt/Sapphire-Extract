@@ -15,3 +15,5 @@ Add a new project of the same name and select the location in the plugins subdir
 //Right click on the project in the solution explorer and go to add->project dependencies
 //Check contract and common
 Right click and rename the cs file
+
+Important: if any nuget packages are used by plugins, you have to add the following to the csproj PropertyGroup: <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>

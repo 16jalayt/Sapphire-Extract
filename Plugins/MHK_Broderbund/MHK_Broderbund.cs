@@ -61,7 +61,7 @@ namespace MHK_Broderbund
         public bool Extract(BetterBinaryReader InStream)
         {
             //IMPORTANT: Everything is BIG endian
-            Log.Warning($"Plugin '{Name}' is not finished. Will likely spew out garbage.");
+            Log.Warning($"Plugin '{Name}' is not finished. Will likely spew out garbage.\n");
 
             InStream.Seek(0);
 

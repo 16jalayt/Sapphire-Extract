@@ -123,22 +123,22 @@ namespace MHK_Broderbund
                     }
                 }
             }
-            return [];
-            /*else
+            else
             {
                 //unknown
-                inStream.readInt();
-                byte[] raw = new byte[(int)(fileOffset + fileLength - inStream.getFilePointer())];
-                System.out.println(raw.length + ":" + fileOffset + ":" + fileLength + ":" + inStream.getFilePointer());
-                inStream.read(raw);
+                InStream.ReadIntBE();
+                int rawLen = (int)(FileContents.Length - InStream.Position());
+                Log.Debug("beg data pos: " + InStream.Position());
+                //System.out.println(raw.length + ":" + fileOffset + ":" + fileLength + ":" + inStream.getFilePointer());
+                byte[] raw = InStream.ReadBytes(rawLen);
                 int[] image = new int[bytesPerRow * height];
                 int p = 0;
                 int q = 0;
 
                 //raw.length
-                while (p < raw.length)
+                while (p < raw.Length)
                 {
-                    int cmd = Helpers.unsigned(raw[p]);
+                    byte cmd = raw[p];
                     p++;
 
                     if (cmd == 0)
@@ -153,8 +153,8 @@ namespace MHK_Broderbund
                         // color table.
                         for (int i = 0; i < cmd; i++)
                         {
-                            image[q] = Helpers.unsigned(raw[p]);
-                            image[q + 1] = Helpers.unsigned(raw[p + 1]);
+                            image[q] = raw[p];
+                            image[q + 1] = raw[p + 1];
                             p += 2;
                             q += 2;
                         }
@@ -195,7 +195,7 @@ namespace MHK_Broderbund
                         int subCount = cmd & 0x3f;
                         for (int i = 0; i < subCount; i++)
                         {
-                            int sub = Helpers.unsigned(raw[p]);
+                            int sub = raw[p];
                             //System.out.println(p + ":" + cmd + ":" + sub + ":" + subCount);
                             p++;
                             if (sub >= 0x01 && sub <= 0x0f)
@@ -212,7 +212,7 @@ namespace MHK_Broderbund
                             {
                                 // Repeat last duplet, but change second pixel to p.
                                 image[q] = image[q - 2];
-                                image[q + 1] = Helpers.unsigned(raw[p]);
+                                image[q + 1] = raw[p];
                                 p++;
                                 q += 2;
                             }
@@ -245,7 +245,7 @@ namespace MHK_Broderbund
                             else if (sub == 0x40)
                             {
                                 // Repeat last duplet, but change first pixel to p.
-                                image[q] = Helpers.unsigned(raw[p]);
+                                image[q] = raw[p];
                                 image[q + 1] = image[q - 1];
                                 p++;
                                 q += 2;
@@ -262,8 +262,8 @@ namespace MHK_Broderbund
                             else if (sub == 0x50)
                             {
                                 // Output two absolute pixel values, p1 and p2.
-                                image[q] = Helpers.unsigned(raw[p]);
-                                image[q + 1] = Helpers.unsigned(raw[p + 1]);
+                                image[q] = raw[p];
+                                image[q + 1] = raw[p + 1];
                                 p += 2;
                                 q += 2;
                             }
@@ -273,7 +273,7 @@ namespace MHK_Broderbund
                                 // Output pixel at relative position -m, then absolute pixel value p.
                                 int offset = -(sub & 0b00000111);
                                 image[q] = image[q + offset];
-                                image[q + 1] = Helpers.unsigned(raw[p]);
+                                image[q + 1] = raw[p];
                                 p++;
                                 q += 2;
                             }
@@ -283,7 +283,7 @@ namespace MHK_Broderbund
                                 // Output absolute pixel value p, then pixel at relative position -m.
                                 // (relative to the second pixel!)
                                 int offset = -(sub & 0b00000111) + 1;
-                                image[q] = Helpers.unsigned(raw[p]);
+                                image[q] = raw[p];
                                 image[q + 1] = image[q + offset];
                                 p++;
                                 q += 2;
@@ -292,7 +292,7 @@ namespace MHK_Broderbund
                             {
                                 // 0110xxxx p
                                 // Output absolute pixel value p, then (second pixel of last duplet) + x.
-                                image[q] = Helpers.unsigned(raw[p]);
+                                image[q] = raw[p];
                                 image[q + 1] = image[q - 1] + (sub & 0b00001111);
                                 p++;
                                 q += 2;
@@ -301,7 +301,7 @@ namespace MHK_Broderbund
                             {
                                 // 0111xxxx p
                                 // Output absolute pixel value p, then (second pixel of last duplet) - x.
-                                image[q] = Helpers.unsigned(raw[p]);
+                                image[q] = raw[p];
                                 image[q + 1] = image[q - 1] - (sub & 0b00001111);
                                 p++;
                                 q += 2;
@@ -319,7 +319,7 @@ namespace MHK_Broderbund
                                 // 1001xxxx p
                                 // Output (first pixel of last duplet) + x, then absolute pixel value p.
                                 image[q] = image[q - 2] + (sub & 0b00001111);
-                                image[q + 1] = Helpers.unsigned(raw[p]);
+                                image[q + 1] = raw[p];
                                 p++;
                                 q += 2;
                             }
@@ -327,8 +327,8 @@ namespace MHK_Broderbund
                             {
                                 // 0xa0 xxxxyyyy
                                 // Repeat last duplet, adding x to the first pixel and y to the second.
-                                int x = (Helpers.unsigned(raw[p]) & 0b11110000) >> 4;
-                                int y = Helpers.unsigned(raw[p]) & 0b00001111;
+                                int x = (raw[p] & 0b11110000) >> 4;
+                                int y = raw[p] & 0b00001111;
                                 image[q] = image[q - 2] + x;
                                 image[q + 1] = image[q - 1] + y;
                                 p++;
@@ -339,8 +339,8 @@ namespace MHK_Broderbund
                                 // 0xb0 xxxxyyyy
                                 // Repeat last duplet, adding x to the first pixel and subtracting y to the
                                 // second.
-                                int x = (Helpers.unsigned(raw[p]) & 0b11110000) >> 4;
-                                int y = Helpers.unsigned(raw[p]) & 0b00001111;
+                                int x = (raw[p] & 0b11110000) >> 4;
+                                int y = raw[p] & 0b00001111;
                                 image[q] = image[q - 2] + x;
                                 image[q + 1] = image[q - 1] - y;
                                 p++;
@@ -359,7 +359,7 @@ namespace MHK_Broderbund
                                 // 1101xxxx p
                                 // Output (first pixel of last duplet) - x, then absolute pixel value p.
                                 image[q] = image[q - 2] - (sub & 0b00001111);
-                                image[q + 1] = Helpers.unsigned(raw[p]);
+                                image[q + 1] = raw[p];
                                 p++;
                                 q += 2;
                             }
@@ -367,8 +367,8 @@ namespace MHK_Broderbund
                             {
                                 // 0xe0 xxxxyyyy
                                 // Repeat last duplet, subtracting x from first pixel and adding y to second.
-                                int x = (Helpers.unsigned(raw[p]) & 0b11110000) >> 4;
-                                int y = Helpers.unsigned(raw[p]) & 0b00001111;
+                                int x = (raw[p] & 0b11110000) >> 4;
+                                int y = raw[p] & 0b00001111;
                                 image[q] = image[q - 2] - x;
                                 image[q + 1] = image[q - 1] + y;
                                 p++;
@@ -378,8 +378,8 @@ namespace MHK_Broderbund
                             {
                                 // 0xfx xxxxyyyy
                                 // Repeat last duplet, subtracting x from first pixel and y from second.
-                                int x = ((sub & 0b00001111) << 4) | ((Helpers.unsigned(raw[p]) & 0b11110000) >> 4);
-                                int y = Helpers.unsigned(raw[p]) & 0b00001111;
+                                int x = ((sub & 0b00001111) << 4) | ((raw[p] & 0b11110000) >> 4);
+                                int y = raw[p] & 0b00001111;
                                 image[q] = image[q - 2] - x;
                                 image[q + 1] = image[q - 1] - y;
                                 p++;
@@ -391,7 +391,8 @@ namespace MHK_Broderbund
                                 // Repeat n duplets from relative position -m (given in pixels, not duplets). If r
                                 // is 0, another byte follows and the last pixel is set to that value. n and r come
                                 // from the table on the right.
-                                int n, r;
+                                int n = 0;
+                                int r = 0;
                                 if (sub >= 0xa4 && sub <= 0xa7)
                                 {
                                     n = 2;
@@ -449,10 +450,10 @@ namespace MHK_Broderbund
                                 }
                                 else
                                 {
-                                    throw new RuntimeException("subcommand: " + sub);
+                                    Log.Error("subcommand: " + sub);
                                 }
 
-                                int offset = -(Helpers.unsigned(raw[p]) | ((sub & 0b00000011) << 8));
+                                int offset = -(raw[p] | ((sub & 0b00000011) << 8));
                                 p++;
                                 for (int j = 0; j < n; j++)
                                 {
@@ -462,7 +463,7 @@ namespace MHK_Broderbund
                                 q += 2 * n;
                                 if (r == 0)
                                 {
-                                    image[q - 1] = Helpers.unsigned(raw[p]);
+                                    image[q - 1] = raw[p];
                                     p++;
                                 }
                             }
@@ -471,9 +472,9 @@ namespace MHK_Broderbund
                                 // 0xfc nnnnnrmm mmmmmmmm (p)
                                 // Repeat n+2 duplets from relative position -m (given in pixels, not duplets). If
                                 // r is 0, another byte p follows and the last pixel is set to absolute value p.
-                                int n = (Helpers.unsigned(raw[p]) & 0b11111000) >> 3;
-                                int r = (Helpers.unsigned(raw[p]) & 0b00000100) >> 2;
-                                int offset = -(Helpers.unsigned(raw[p + 1]) | ((Helpers.unsigned(raw[p]) & 0b00000011) << 8));
+                                int n = (raw[p] & 0b11111000) >> 3;
+                                int r = (raw[p] & 0b00000100) >> 2;
+                                int offset = -(raw[p + 1] | ((raw[p] & 0b00000011) << 8));
 
                                 for (int j = 0; j < n + 2; j++)
                                 {
@@ -484,37 +485,38 @@ namespace MHK_Broderbund
                                 q += 2 * n + 4;
                                 if (r == 0)
                                 {
-                                    image[q - 1] = Helpers.unsigned(raw[p]);
+                                    image[q - 1] = raw[p];
                                     p++;
                                 }
                             }
                             else
                             {
-                                throw new RuntimeException("subcommand: " + sub);
+                                Log.Error("subcommand2: " + sub);
                             }
                         }
                     }
                 }
-                outputImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-                int i = 0;
-                for (int y = 0; y < height; y++)
+                using (Image<Rgb24> uncompressedImage = new Image<Rgb24>(width, height))
                 {
-                    for (int x = 0; x < bytesPerRow; x++)
+                    int i = 0;
+                    for (int y = 0; y < height; y++)
                     {
-                        int colorIndex = image[i];
-                        if (colorIndex < 0)
-                            colorIndex = 255;
-                        Color color = colors[colorIndex & 0xff];
-                        if (x < width) outputImage.setRGB(x, y, color.getRGB());
-                        i++;
+                        for (int x = 0; x < bytesPerRow; x++)
+                        {
+                            int colorIndex = image[i];
+                            Rgb24 color = colors[colorIndex];
+                            if (x < width)
+                                uncompressedImage[x, y] = color;
+                            i++;
+                        }
+                    }
+                    using (var ms = new MemoryStream())
+                    {
+                        uncompressedImage.Save(ms, new PngEncoder());
+                        return ms.ToArray();
                     }
                 }
-                ImageIO.write(outputImage, "png", outputStream);
-                outputStream.flush();
-                bitmap = new byte[outputStream.size()];
-                bitmap = outputStream.toByteArray();
-                return bitmap;
-            }*/
+            }
         }
     }
 }
