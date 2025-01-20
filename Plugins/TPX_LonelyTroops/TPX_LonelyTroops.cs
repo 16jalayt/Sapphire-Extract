@@ -56,8 +56,6 @@ namespace TPX_LonelyTroops
         /// <returns></returns>
         public bool Extract(BetterBinaryReader InStream)
         {
-            Log.Warning($"Plugin '{Name}' is not finished. Will likely spew out garbage.\n");
-
             //file len - 8
             int fileLength = InStream.ReadInt("File length: ");
             //version and zero
@@ -66,7 +64,7 @@ namespace TPX_LonelyTroops
             int height = InStream.ReadInt("Height: ");
             //pixel format info?
             int un1 = InStream.ReadInt("un1: ");
-            int un2 = InStream.ReadInt("un2: ");
+            int un2 = InStream.ReadInt("BPP: ");
             InStream.Skip(4);
 
             byte[] imgData = InStream.ReadBytes((int)(InStream.Length() - InStream.Position()));

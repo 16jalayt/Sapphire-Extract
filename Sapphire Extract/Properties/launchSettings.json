@@ -2,7 +2,7 @@
   "profiles": {
     "Sapphire Extract": {
       "commandName": "Project",
-      "commandLineArgs": "\"SplashLT.tpx\" -o -v"
+      "commandLineArgs": "\"TBL6MAINB16.tbv\" -o -v"
     }
   }
 }

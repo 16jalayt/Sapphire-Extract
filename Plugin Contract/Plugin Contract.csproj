@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Serilog" Version="4.2.0-dev-02330" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Sapphire Extract Helpers\Sapphire Extract Helpers.csproj" />
   </ItemGroup>
 

@@ -32,7 +32,9 @@ namespace Sapphire_Extract_Helpers
             FileExtension = Path.GetExtension(FilePath);
             FileName = Path.GetFileName(FilePath);
             FileDirectory = Path.GetDirectoryName(FilePath);
-            _s = new FileStream(@filePath, FileMode.Open);
+            //_s = new FileStream(@filePath, FileMode.Open);
+            //Gets arount inablility to read a read only file for some reason
+            _s = new FileStream(@filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             _br = new BinaryReader(_s, Encoding.Default);
         }
 

@@ -10,10 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Serilog" Version="4.2.0-dev-02330" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Plugin Contract\Plugin Contract.csproj" />
     <ProjectReference Include="..\..\Sapphire Extract Common\Sapphire Extract Common.csproj" />
   </ItemGroup>

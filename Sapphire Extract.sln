@@ -38,7 +38,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PAK_Minigolf", "Plugins\PAK
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SYJ_Syberia", "Plugins\SYJ_Syberia\SYJ_Syberia.csproj", "{0EF0FF05-ABAD-4A56-87E5-FFB1775FED03}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZIP_Genaric", "Plugins\ZIP_Genaric\ZIP_Genaric.csproj", "{A7D0BC10-99FC-45A2-970F-478365172D52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basic_Formats", "Plugins\Basic_Formats\Basic_Formats.csproj", "{A7D0BC10-99FC-45A2-970F-478365172D52}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DATA_Sandlot", "Plugins\DATA_Sandlot\DATA_Sandlot.csproj", "{BB9BF365-E98A-400C-A80F-9F0D88A074B0}"
 EndProject

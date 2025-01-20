@@ -4,10 +4,6 @@ using Serilog;
 
 //Version 1.0
 
-/*Remember to build solution manually before testing plugin!
- * Start debugging does NOT rebuild plugins!
- **/
-
 namespace CIF_HerInteractive
 {
     internal class CIF_HerInteractive : IPlugin
@@ -62,14 +58,6 @@ namespace CIF_HerInteractive
 
             //Seek past magic (DEMO)
             InStream.Seek(4);
-
-            //Note: best way to check for constant bytes is AssertValue,
-            //but can also use AssertString, like under CanExtract above,
-            //but AssertString only works with plain text
-
-            //Note: AssertValue is designed as a notification to the developer of
-            //different file variations to aid in research. A FAILED ASSERT WILL NOT END PLUGIN! just display a warning.
-            //However, it will return a bool, so you can use an "if(!assert) return false" to fail the extraction.
 
             //Unknown value. Seems to always stay same. Version likely 2.1
             Helpers.AssertValue(InStream, new byte[] { 0x02, 0x01 });
