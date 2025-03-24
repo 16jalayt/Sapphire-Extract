@@ -16,7 +16,7 @@ namespace Sapphire_Extract_Helpers
         /// <param name="InStream"></param>
         /// <param name="val"></param>
         /// <returns>Truth</returns>
-        public static bool AssertValue(BetterBinaryReader InStream, byte[] val)
+        public static bool AssertValue(BetterBinaryReader InStream, byte[] val, string failMessage="")
         {
             byte[] readValues = InStream.ReadBytes(val.Length);
             if (!Equal(readValues, val))
@@ -24,6 +24,7 @@ namespace Sapphire_Extract_Helpers
                 //TODO:figure out better output. prints int
                 Log.Warning($"Value in file {InStream.FileName} at position '{InStream.Position()}'...");
                 Log.Warning($"Expected value '{Hex(val)}' got '{Hex(readValues)}'");
+                Log.Warning(failMessage);
                 return false;
             }
             return true;
@@ -70,6 +71,21 @@ namespace Sapphire_Extract_Helpers
                 return false;
             }
             return true;
+        }
+
+        /// <summary>
+        /// Read an int and print if not equal.
+        /// </summary>
+        /// <param name="InStream"></param>
+        /// <param name="val"></param>
+        /// <param name="failMessage"></param>
+        /// <returns>Truth</returns>
+        public static bool AssertInt(BetterBinaryReader InStream, int val, string failMessage, bool LittleEndian = true)
+        {
+            bool result = AssertInt(InStream, val, LittleEndian);
+            if (!result)
+                Log.Warning(failMessage);
+            return result;
         }
 
         /// <summary>

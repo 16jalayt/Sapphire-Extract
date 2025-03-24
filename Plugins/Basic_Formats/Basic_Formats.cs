@@ -6,13 +6,6 @@ using System.IO.Compression;
 
 //Version 1.0
 
-/*Remember to build solution manually before testing plugin!
- * Start debugging does NOT rebuild plugins!
- *
- * This is an exmple plugin to show the basics of creating a plugin.
- *The example file is included in the example plugin directory.
- **/
-
 namespace Basic_Formats
 {
     internal class Basic_Formats : IPlugin
@@ -63,10 +56,23 @@ namespace Basic_Formats
             if (Helpers.AssertString(InStream, "BM"))
                 return true;
 
+            InStream.Seek(6);
+            //List known file types Jpg:
+            //*acg - AWE Productions - Agatha Christie games
+            if (Helpers.AssertString(InStream, "JFIF"))
+                return true;
+
+            InStream.Seek(InStream.Length() - 18);
+            //List known file types Jpg:
+            //*aca - AWE Productions - Agatha Christie games
+            if (Helpers.AssertString(InStream, "TRUEVISION-XFILE"))
+                return true;
+
             InStream.Seek(0);
             //List known file types Wavs:
             //*.M, *.S - MECC - Oregon Trail Windows
             //.DAT - Roller Coaster Tycoon
+            //*acv - AWE Productions - Agatha Christie games
             if (Helpers.AssertString(InStream, "RIFF"))
             {
                 InStream.Seek(8);
@@ -74,6 +80,12 @@ namespace Basic_Formats
                     return true;
                 return false;
             }
+
+            InStream.Seek(0);
+            //List known file types Implulse Tracker:
+            //*.dat - Midnight Synergy - Wonderland
+            if (Helpers.AssertString(InStream, "IMPM"))
+                return true;
             else
                 return false;
         }
@@ -85,6 +97,7 @@ namespace Basic_Formats
         /// <returns></returns>
         public bool Extract(BetterBinaryReader InStream)
         {
+            InStream.Seek(0);
             if (Helpers.AssertString(InStream, "PK"))
             {
                 Log.Information($"Currently extracting the file: '{InStream.FileName}' as a zip. Please be patient.");
@@ -95,19 +108,40 @@ namespace Basic_Formats
                 ZipFile.ExtractToDirectory(InStream.FilePath, InStream.FileDirectory + "\\" + InStream.FileNameWithoutExtension, true);
                 return true;
             }
-            InStream.Seek(0);
 
+            InStream.Seek(0);
             //Both are just an easy rename
             if (Helpers.AssertString(InStream, "BM"))
             {
                 SaveFile(InStream, ".bmp");
                 return true;
             }
-            InStream.Seek(0);
 
+            InStream.Seek(6);
+            if (Helpers.AssertString(InStream, "JFIF"))
+            {
+                SaveFile(InStream, ".jpg");
+                return true;
+            }
+
+            InStream.Seek(0);
             if (Helpers.AssertString(InStream, "RIFF"))
             {
                 SaveFile(InStream, ".wav");
+                return true;
+            }
+
+            InStream.Seek(InStream.Length() - 18);
+            if (Helpers.AssertString(InStream, "TRUEVISION-XFILE"))
+            {
+                SaveFile(InStream, ".tga");
+                return true;
+            }
+
+            InStream.Seek(0);
+            if (Helpers.AssertString(InStream, "IMPM"))
+            {
+                SaveFile(InStream, ".it");
                 return true;
             }
 

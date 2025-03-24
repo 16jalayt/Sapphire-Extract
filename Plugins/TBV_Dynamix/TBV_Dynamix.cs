@@ -57,17 +57,17 @@ namespace TBV_Dynamix
             //Log.Warning($"Plugin '{Name}' is not finished. Will likely spew out garbage.");
             Log.Warning($"Some files may error with an EOF exception.This appears to be Dynamix's fault.");
 
-            Helpers.AssertString(InStream, "TBVolume");
+            Helpers.AssertString(InStream, "TBVolume\0");
 
             //Unknown value. Seems to always stay same. Version?
-            Helpers.AssertValue(InStream, new byte[] { 0xD0, 0x07 });
+            Helpers.AssertValue(InStream, new byte[] { 0xD0, 0x07 }, "Version seems to be wrong");
 
             //# of files (4 bytes)
-            int NumFiles = InStream.ReadInt();
+            short NumFiles = InStream.ReadShort();
 
             Log.Information($"Extracting {NumFiles} files...\n");
-            //Always null?
-            Helpers.AssertValue(InStream, new byte[] { 0x00, 0x00 });
+
+            int Unknown = InStream.ReadInt();
 
             //Dev's name/email null padded? RichRayl@CUC\0\0...
             //Have to use assertvalue insted of assert string because
@@ -93,7 +93,6 @@ namespace TBV_Dynamix
                 string CurrFileName = Helpers.String(InStream.ReadBytes(24)).Trim('\0');
                 //string CurrFileName = Helpers.String(InStream.ReadBytes(24)).Replace("\0", string.Empty);
                 Log.Debug($"CurrFileName: {CurrFileName}");
-
 
                 int FileLength = InStream.ReadInt("File Length: ");
 

@@ -40,7 +40,7 @@ namespace Sapphire_Extract
                 log.WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Information);
             }
 
-            Serilog.Log.Logger = log.CreateLogger();
+            Log.Logger = log.CreateLogger();
 
             Core.InitPlugins();
 
@@ -92,10 +92,10 @@ namespace Sapphire_Extract
             return 1;
         }
 
-        private static int ParseFail(IEnumerable<CommandLine.Error> errs)
+        private static int ParseFail(IEnumerable<Error> errs)
         {
-            foreach (CommandLine.Error err in errs)
-                Serilog.Log.Fatal($"CLI error of: '{err}");
+            foreach (Error err in errs)
+                Log.Fatal($"CLI error of: '{err}");
             return 1;
         }
     }

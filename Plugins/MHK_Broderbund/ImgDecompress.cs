@@ -131,6 +131,7 @@ namespace MHK_Broderbund
                 Log.Debug("beg data pos: " + InStream.Position());
                 //System.out.println(raw.length + ":" + fileOffset + ":" + fileLength + ":" + inStream.getFilePointer());
                 byte[] raw = InStream.ReadBytes(rawLen);
+                //File.WriteAllBytes("LastImage.raw", raw);
                 int[] image = new int[bytesPerRow * height];
                 int p = 0;
                 int q = 0;
@@ -504,7 +505,9 @@ namespace MHK_Broderbund
                         for (int x = 0; x < bytesPerRow; x++)
                         {
                             int colorIndex = image[i];
-                            Rgb24 color = colors[colorIndex];
+                            if (colorIndex < 0)
+                                colorIndex = 255;
+                            Rgb24 color = colors[colorIndex & 0xff];
                             if (x < width)
                                 uncompressedImage[x, y] = color;
                             i++;
